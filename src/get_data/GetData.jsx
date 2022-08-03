@@ -1,38 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
 var qs = require('qs');
-
 function GetRequestHooks() {
-   const [totalReactPackages, setTotalReactPackages] = useState(null);
-
-   useEffect(() => {
-      // GET request using axios inside useEffect React hook
-      // axios.get('https://wallettreatment.herokuapp.com/wallets')
-      //    .then(response => setTotalReactPackages(response.data));
-
-      const data = {
-         'wallet_address': '0xB50E0B4bdD373F1CD56c11D1784bF8C522dE5309'
-      };
-      const url = 'https://wallettreatment.herokuapp.com/wallets'
-      const options = {
-         method: 'GET',
-         headers: { 'content-type': 'application/x-www-form-urlencoded' },
-         data: qs.stringify(data),
-         url,
-      };
-      axios(options).then(response => setTotalReactPackages(JSON.stringify((response.data))));
-
-      // empty dependency array means this effect will only run once (like componentDidMount in classes)
-   }, []);
-
-   return (
-      <div className="card text-center m-3">
-         <h5 className="card-header">GET Request with React Hooks</h5>
-         <div className="card-body">
-            Total react packages: {totalReactPackages}
-         </div>
-      </div>
-   );
+  const [userList, setUserList] = useState([]);
+ 
+  useEffect(() => {
+   var data = qs.stringify({
+      'wallet_address': '0xB50E0B4bdD373F1CD56c11D1784bF8C522dE5301' 
+    });
+    var config = {
+      method: 'post',
+      url: 'http://localhost:3001/wallets',
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }, []);
+ 
+  return (
+    <div className="container-fluid p-3">
+      <h5 className="d-inline-block">GET request using axios with React Hooks - <a href="https://www.cluemediator.com" target="_blank" rel="noopener noreferrer">Clue Mediator</a></h5>
+    
+ 
+    </div>
+  );
 }
+ 
+// export default App;
 
 export { GetRequestHooks };

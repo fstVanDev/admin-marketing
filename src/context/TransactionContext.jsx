@@ -137,7 +137,7 @@ export const TransactionProvider = ({ children }) => {
       const promise = await axios(config).then(response => response)
 
       const dataPromise = promise
-      console.log((dataPromise), 'hey')
+      // console.log((dataPromise), 'hey')
       return dataPromise
    }
 
