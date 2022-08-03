@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { TranscactionContext } from "../context/TransactionContext"
 import { useStateContext } from "../context/ContextProvider";
+import {GetRequestHooks} from '../get_data/GetData'
 
 const Input = ({ placeholder, name, type, value, handleChange }) => (
    <input
@@ -18,7 +19,7 @@ const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(ad
 
 const CreateNewProject = () => {
    const { currentColor, currentMode } = useStateContext();
-   const { connectWallet, currentAccount, walletDisconnect } = useContext(TranscactionContext)
+   const { connectWallet, currentAccount, walletDisconnect, isRegistered } = useContext(TranscactionContext)
 
    return (
       <div>
@@ -42,8 +43,8 @@ const CreateNewProject = () => {
                   <br />
                   {/* Dropdown */}
 
-                  <div class="inline-block relative w-64">
-                     <select class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                  <div className="inline-block relative w-64">
+                     <select className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                         <option>Choose</option>
                         <option>DApp</option>
                         <option>Exchange</option>
@@ -53,20 +54,22 @@ const CreateNewProject = () => {
                   <br />
                   <button
                      type="button"
-                     onClick={''}
                      className='flex flex-row justify-center items-center my-5 m-auto p-3 rounded-full cursor-pointer border-amber-50 bg-cyan-800 bg:hover '
                   >
                      <p className="text-white text-base font-semibold">
                         Submit
                      </p>
                   </button>
-
+                  
                </form >
 
+              
 
             ) : (
                <p className='text-center w-80 mx-auto mt-9 text-white text-xl'>Please Connect Wallet</p>
             )}
+         {/* {JSON.stringify(isRegistered)} */}
+         <GetRequestHooks />
       </div>
    )
 }
