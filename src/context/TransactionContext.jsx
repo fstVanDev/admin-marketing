@@ -25,14 +25,14 @@ export const TransactionProvider = ({ children }) => {
    const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: '' })
    const [isLoading, setIsLoading] = useState(false)
    const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
-   const [isRegistered, setIsRegistered] = useState([])
+   const [isRegistered, setIsRegistered] = useState(Number)
 
    const handleChange = (e, name) => {
       setFormData((prevState) => ({ ...prevState, [name]: e.target.value }))
    }
 
 
-   
+
 
    const checkIfWalletConnected = async () => {
 
@@ -47,11 +47,41 @@ export const TransactionProvider = ({ children }) => {
             console.log('No accounts found')
          }
 
+
+         console.log(accounts[0], 'from checkconnect')
+         var data = qs.stringify({
+            'wallet_address': accounts[0]
+         });
+         console.log(data)
+         var config = {
+            method: 'post',
+            baseURL: 'https://wallettreatment.herokuapp.com/wallets',
+            headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data
+         };
+         console.log('hrtr')
+
+         axios(config).then(function (response) {
+            console.log(response.data)
+            console.log(response.status, 'statussss')
+            setIsRegistered(response.status)
+         }).catch(error => {
+            console.log(error)
+         })
+         console.log('srrr')
+         
+
+
+
       } catch (error) {
          console.log(error);
 
          throw new Error('No ethereum object')
       }
+
+
    }
 
 
@@ -66,43 +96,40 @@ export const TransactionProvider = ({ children }) => {
 
          setCurrentAccount(accounts[0])
 
+         console.log(accounts[0], 'from walletconnect')
+         var data = qs.stringify({
+            'wallet_address': accounts[0]
+         });
+         console.log(data)
+         var config = {
+            method: 'post',
+            baseURL: 'https://wallettreatment.herokuapp.com/wallets',
+            headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data
+         };
+         console.log('hrtr')
+
+         axios(config).then(function (response) {
+            console.log(response.data)
+            setIsRegistered(response.status)
+         }).catch(error => {
+            console.log(error)
+         })
+         console.log('srrr')
+
       } catch (error) {
          console.log(error);
 
          throw new Error('No ethereum object')
       }
+
    }
 
    const walletDisconnect = async () => {
       setCurrentAccount('')
-   }
-
-   const checkData = async (account) => {
-
-      if (currentAccount !== '') {
-         account = currentAccount
-      }
-
-      console.log('account', account)
-
-      var data = qs.stringify({
-         'wallet_address': account
-      });
-      var config = {
-         method: 'post',
-         baseURL: 'https://wallettreatment.herokuapp.com/wallets',
-         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-         },
-         data: data
-      };
-
-      axios(config).then(function (response) {
-         console.log(response.data)
-         setIsRegistered(response.data)
-      }).catch(error => {
-         console.log(error)
-      })
+      setIsRegistered(404)
    }
 
    const sendTransaction = async () => {
@@ -142,52 +169,13 @@ export const TransactionProvider = ({ children }) => {
       }
    }
 
-   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-   // var data = qs.stringify({
-   //    'wallet_address': currentAccount
-   // });
-   // var config = {
-   //    method: 'post',
-   //    baseURL: 'https://wallettreatment.herokuapp.com/wallets',
-   //    headers: {
-   //       'Content-Type': 'application/x-www-form-urlencoded'
-   //    },
-   //    data: data
-   // };
-
-   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-   // const getData = () => {
-   //    axios(config)
-   //       .then(function (response) {
-   //          console.log(response.data, typeof (response.data), 'axios');
-   //          console.log(currentAccount)
-   //          setIsRegistered(response.data)
-   //       })
-   //       .catch(function (error) {
-   //          console.log(error);
-   //       });
-   // }
-   // console.log(isRegistered, 'from context')
-   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
    useEffect(() => {
       checkIfWalletConnected()
-      checkData()
    }, [])
 
-   // useEffect(() => {
-   //    getData()
-   // }, [])
 
    return (
-      <TranscactionContext.Provider value={{ connectWallet: walletConnect, walletDisconnect, currentAccount, formData, setFormData, handleChange, sendTransaction, isRegistered, checkData }}>
+      <TranscactionContext.Provider value={{ connectWallet: walletConnect, walletDisconnect, currentAccount, formData, setFormData, handleChange, sendTransaction, isRegistered }}>
          {children}
       </TranscactionContext.Provider>
    )
