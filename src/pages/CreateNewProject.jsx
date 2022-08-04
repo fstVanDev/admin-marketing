@@ -1,21 +1,21 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, Fragment } from 'react'
 import { TranscactionContext } from "../context/TransactionContext"
-import { useStateContext } from "../context/ContextProvider";
-import { postData } from '../db/ReqisterRequest';
+import { Menu, Transition } from '@headlessui/react'
 import axios from 'axios';
-import { columnSelectionComplete } from '@syncfusion/ej2-react-grids';
 const qs = require('qs')
 
 
-const shortenAddress = (address) => `${address.slice(0, 5)}...${address.slice(address.length - 4)}`;
-
-
 const CreateNewProject = () => {
-
-   const [email, setEmail] = useState("");
-   const [currentWallet, setCurrentWallet] = useState("");
-
    const { connectWallet, currentAccount, walletDisconnect, isRegistered } = useContext(TranscactionContext)
+
+   const [projectName, setProjectName] = useState('')
+   const [tokenContract, setTokenContract] = useState('')
+   const [projectUrl, setProjectUrl] = useState('')
+   const [projectType, setProjectType] = useState('')
+
+   function classNames(...classes) {
+      return classes.filter(Boolean).join(' ')
+   }
 
 
    let handleSubmit = async (event) => {
@@ -23,15 +23,22 @@ const CreateNewProject = () => {
 
       try {
          var data = qs.stringify({
-            'wallet_address': currentAccount,
-            'email': email
+            'project_name': projectName,
+            'token_contract': tokenContract,
+            'project_url': projectUrl,
+            'project_type': projectType,
+            'owner_address': currentAccount
          });
-         console.log(data)
+         console.log(projectName, 'name from post project')
+         console.log(projectUrl, 'url from post project')
+         console.log(projectType, 'type from post project')
+         console.log(currentAccount, 'acc from post project')
+         console.log(tokenContract, 'contract from post project')
 
 
          var config = {
             method: 'post',
-            baseURL: 'https://wallettreatment.herokuapp.com/send',
+            baseURL: 'https://wallettreatment.herokuapp.com/register_project',
             headers: {
                'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -40,8 +47,8 @@ const CreateNewProject = () => {
 
          axios(config)
             .then(response => {
-               console.log(response, 'responseeeeee')
-               console.log('Отправка')
+               console.log(response, 'response from post project')
+               console.log('Отправка project')
             })
             .catch(error => {
                console.log(error)
@@ -51,39 +58,94 @@ const CreateNewProject = () => {
       }
    };
 
+
    return (
       <div>
-         {currentAccount === '' ? (
-            <p>Please connect your wallet</p>
-         ) : (
-            <div>
-               {isRegistered === 201 ?
-                  (<p>Create new project</p>) : (
-                     <form className='w-[400px] mx-auto mt-9 rounded border-amber-50' onSubmit={handleSubmit}>
-                        <input
-                           className="my-2 w-full rounded-md p-2 text-black outline-none bg-bcg text-sm white-glassmorphism focus:border-none"
-                           type="text"
-                           value={currentAccount}
-                           placeholder="Name"
-                           onChange={(e) => setCurrentWallet(e.target.value)}
-                        />
-                        <input
-                           className="my-2 w-full rounded-md p-2 text-black outline-none bg-bcg text-sm white-glassmorphism focus:border-none"
-                           type="text"
-                           value={email}
-                           placeholder="Email"
-                           onChange={(e) => setEmail(e.target.value)}
-                        />
 
-                        <button className='flex flex-row justify-center items-center my-5 m-auto p-3 rounded-full cursor-pointer border-amber-50 bg-cyan-800 bg:hover' type="submit">Create</button>
-                     </form>)
-               }
-            </div>
-         )
-         }
+         <p className='text-white font-xxl m-auto p-0'>Create Project</p>
+
+         <form className='w-[400px] mx-auto mt-9 rounded border-amber-50' onSubmit={handleSubmit}>
+            <input
+               className="my-2 w-full rounded-md p-2 text-black outline-none bg-bcg text-sm white-glassmorphism focus:border-none"
+               type="text"
+               value={projectName}
+               placeholder="Project name"
+               onChange={(e) => setProjectName(e.target.value)}
+            />
+            <input
+               className="my-2 w-full rounded-md p-2 text-black outline-none bg-bcg text-sm white-glassmorphism focus:border-none"
+               type="text"
+               value={tokenContract}
+               placeholder="Contarct"
+               onChange={(e) => setTokenContract(e.target.value)}
+            />
+            <input
+               className="my-2 w-full rounded-md p-2 text-black outline-none bg-bcg text-sm white-glassmorphism focus:border-none"
+               type="text"
+               value={projectUrl}
+               placeholder="Project URL"
+               onChange={(e) => setProjectUrl(e.target.value)}
+            />
+
+            {/* DropDown */}
+
+            <Menu as="div" className="relative inline-block text-left">
+               <div>
+                  <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                     Type of project
+                  </Menu.Button>
+               </div>
+
+               <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+               >
+                  <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                     <div className="py-1">
+                        <Menu.Item>
+                           {({ active }) => (
+                              <option
+                                 value='DApp'
+                                 className={classNames(
+                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                    'block px-4 py-2 text-sm'
+                                 )}
+                                 onClick={(e) => setProjectType(e.target.value)}
+                              >
+                                 DApp
+                              </option>
+                           )}
+                        </Menu.Item>
+                        <Menu.Item>
+                           {({ active }) => (
+                              <option
+                                 value='Exchange'
+                                 className={classNames(
+                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                    'block px-4 py-2 text-sm'
+                                 )}
+                                 onClick={(e) => setProjectType(e.target.value)}
+
+                              >
+                                 Exchange
+                              </option>
+                           )}
+                        </Menu.Item>
+                     </div>
+                  </Menu.Items>
+               </Transition>
+            </Menu>
+            <button className='flex flex-row justify-center items-center my-5 m-auto p-3 rounded-full cursor-pointer border-amber-50 bg-cyan-800 bg:hover' type="submit">Create</button>
+
+         </form>
+
       </div>
-   );
+   )
 }
 
 export default CreateNewProject
-
