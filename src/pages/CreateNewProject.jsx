@@ -61,8 +61,7 @@ const CreateNewProject = () => {
 
    return (
       <div>
-
-         <p className='text-white font-xxl m-auto p-0'>Create Project</p>
+         <p className='text-white flex font-xxl m-auto p-auto'>Create Project</p>
 
          <form className='w-[400px] mx-auto mt-9 rounded border-amber-50' onSubmit={handleSubmit}>
             <input
