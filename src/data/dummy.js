@@ -507,6 +507,42 @@ export const employeesGrid = [
    },
 ];
 
+export const standartLinks = [
+   {
+      links: [
+         {
+            name: 'dashboard',
+            icon: <FiShoppingBag />,
+         },
+      ],
+   },
+   {
+      links: [
+         {
+            name: 'team',
+            icon: <FiShoppingBag />,
+         },
+      ],
+   },
+   {
+      links: [
+         {
+            name: 'about',
+            icon: <FiShoppingBag />,
+         },
+      ],
+   },
+   {
+      links: [
+         {
+            name: 'prices',
+            icon: <FiShoppingBag />,
+         },
+      ],
+   },
+]
+
+
 export const links = [
    {
       title: 'Projects',

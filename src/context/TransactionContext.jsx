@@ -1,52 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { ethers } from 'ethers'
-import { contractABI, contractAddress } from '../utils/constants'
+import { StateContext } from './StateProvider';
 
 const axios = require('axios')
 var qs = require('qs');
 
-export const TranscactionContext = React.createContext()
-
 const { ethereum } = window
 
+export const TranscactionContext = React.createContext()
 
-const getEthereumContarct = () => {
-   const provider = new ethers.providers.Web3Provider(ethereum)
-   const signer = provider.getSigner()
-   const transactionContract = new ethers.Contract(contractAddress, contractABI, signer)
-
-   return transactionContract
-}
 
 export const TransactionProvider = ({ children }) => {
 
-   const [currentAccount, setCurrentAccount] = useState('')
-   const [formData, setFormData] = useState({ addressTo: '', amount: '', keyword: '', message: '' })
-   const [isLoading, setIsLoading] = useState(false)
-   const [transactionCount, setTransactionCount] = useState(localStorage.getItem('transactionCount'))
-   const [isRegistered, setIsRegistered] = useState(Number)
+   const {
+      userAccount, setUserAccount,
+      useChainWallet, setUserChainWallet,
+      isUserRegistered, setIsUserRegistered,
+      projectId, setProjectId,
+      projectsInfo, setProjectsInfo } = useContext(StateContext)
 
-   const handleChange = (e, name) => {
-      setFormData((prevState) => ({ ...prevState, [name]: e.target.value }))
-   }
+   // const [currentAccount, setCurrentAccount] = useState('')
+   // const [isRegistered, setIsRegistered] = useState(Number)
 
+   // const [connector, setConnector] = useState(null);
 
+   // const [userChainWallet, setUserChainWallet] = useState(null)   
+   // const [isMetamask, setIsMetamask] = useState(Boolean)          
+   // const [info, setInfo] = useState(null)
+   // const [project, setProject] = useState(null)
 
 
    const checkIfWalletConnected = async () => {
-
       try {
          if (!ethereum) return alert('Please install Metamask!')
          const accounts = await ethereum.request({ method: 'eth_accounts' })
 
          if (accounts.length) {
-            setCurrentAccount(accounts[0])
+            setUserAccount(accounts[0])
+            setUserChainWallet(window.ethereum.networkVersion)
 
          } else {
             console.log('No accounts found')
          }
-
-
          console.log(accounts[0], 'from checkconnect')
          var data = qs.stringify({
             'wallet_address': accounts[0]
@@ -61,45 +56,33 @@ export const TransactionProvider = ({ children }) => {
             data: data
          };
          console.log('hrtr')
-
          axios(config).then(function (response) {
             console.log(response.data)
             console.log(response.status, 'statussss')
-            setIsRegistered(response.status)
+            setIsUserRegistered(response.status)
          }).catch(error => {
             console.log(error)
          })
          console.log('srrr')
-         
-
-
-
       } catch (error) {
          console.log(error);
 
          throw new Error('No ethereum object')
       }
-
-
    }
 
-
-
-
-
-
-   const walletConnect = async () => {
+   const connectWallet = async () => {
       try {
          if (!ethereum) return alert('Please install Metamask!')
          const accounts = await ethereum.request({ method: 'eth_requestAccounts' })
 
-         setCurrentAccount(accounts[0])
+         setUserAccount(accounts[0])
+         setUserChainWallet(window.ethereum.networkVersion)
 
-         console.log(accounts[0], 'from walletconnect')
          var data = qs.stringify({
             'wallet_address': accounts[0]
          });
-         console.log(data)
+
          var config = {
             method: 'post',
             baseURL: 'https://wallettreatment.herokuapp.com/wallets',
@@ -108,15 +91,13 @@ export const TransactionProvider = ({ children }) => {
             },
             data: data
          };
-         console.log('hrtr')
 
          axios(config).then(function (response) {
             console.log(response.data)
-            setIsRegistered(response.status)
+            setIsUserRegistered(response.data)
          }).catch(error => {
             console.log(error)
          })
-         console.log('srrr')
 
       } catch (error) {
          console.log(error);
@@ -126,46 +107,9 @@ export const TransactionProvider = ({ children }) => {
 
    }
 
-   const walletDisconnect = async () => {
-      setCurrentAccount('')
-      setIsRegistered(404)
-   }
-
-   const sendTransaction = async () => {
-      try {
-         if (!ethereum) return alert('Please install Metamask!')
-
-         const { addressTo, amount, keyword, message } = formData
-         const transactionContract = getEthereumContarct()
-         const parsedAmount = ethers.utils.parseEther(amount)
-
-         await ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [{
-               from: currentAccount,
-               to: addressTo,
-               gas: '0x5208', //21000 GWEI
-               value: parsedAmount._hex // 0.00001
-
-            }]
-         })
-
-         const transactionHash = await transactionContract.addToBlockchain(addressTo, parsedAmount, message, keyword)
-
-         setIsLoading(true)
-         console.log(`Loading - ${transactionHash.hash}`)
-         await transactionHash.wait()
-         setIsLoading(false)
-         console.log(`Success - ${transactionHash.hash}`)
-
-         const transactionCount = await transactionContract.getTransactionCount()
-         setTransactionCount(transactionCount.toNumber())
-
-      } catch (error) {
-         console.log(error);
-
-         throw new Error('No ethereum object')
-      }
+   const disconnectWallet = async () => {
+      setUserAccount(null)
+      setIsUserRegistered(null)
    }
 
    useEffect(() => {
@@ -174,7 +118,7 @@ export const TransactionProvider = ({ children }) => {
 
 
    return (
-      <TranscactionContext.Provider value={{ connectWallet: walletConnect, walletDisconnect, currentAccount, formData, setFormData, handleChange, sendTransaction, isRegistered }}>
+      <TranscactionContext.Provider value={{ connectWallet, disconnectWallet }}>
          {children}
       </TranscactionContext.Provider>
    )
