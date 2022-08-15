@@ -13,6 +13,7 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
    });
    var config = {
       method: 'post',
+      mode: 'no-cors',
       baseURL: `${process.env.REACT_APP_BACK_URL}/wallets`,
       headers: {
          'Content-Type': 'application/x-www-form-urlencoded'
@@ -23,7 +24,7 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
    axios(config).then(function (response) {
 
       // check register
-      setIsUserRegistered(response.data)
+      setIsUserRegistered(true)
 
       // set info into state
       console.log(response.data[1].project_info, 'info about all user project (need register if null)')
@@ -42,20 +43,17 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
 
 
 // request for register new user in system
-export const registerNewUser = async (name, contract, url, type, account) => {
+export const registerNewUser = async (account, email, isRegistered) => {
 
    var data = qs.stringify({
-      'project_name': name,
-      'token_contract': contract,
-      'project_url': url,
-      'project_type': type,
-      'owner_address': account
+      'wallet_address': account,
+      'email': email
    });
-   
 
    var config = {
       method: 'post',
-      baseURL: `${process.env.REACT_APP_BACK_URL}/register_project`,
+      mode: 'no-cors',
+      baseURL: `${process.env.REACT_APP_BACK_URL}/send`,
       headers: {
          'Content-Type': 'application/x-www-form-urlencoded'
       },
@@ -65,6 +63,39 @@ export const registerNewUser = async (name, contract, url, type, account) => {
    axios(config)
       .then(response => {
          console.log(response, 'register new user is success (request)')
+         isRegistered(true)
+      })
+      .catch(error => {
+         console.log(error)
+      })
+}
+
+
+// request for register new project in system
+export const registerNewProject = async (name, contract, url, type, account) => {
+
+   var data = qs.stringify({
+      'project_name': name,
+      'token_contract': contract,
+      'project_url': url,
+      'project_type': type,
+      'owner_address': account
+   });
+
+
+   var config = {
+      method: 'post',
+      mode: 'no-cors',
+      baseURL: `${process.env.REACT_APP_BACK_URL}/register_project`,
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(response => {
+         console.log(response, 'register new project is success (request)')
       })
       .catch(error => {
          console.log(error)

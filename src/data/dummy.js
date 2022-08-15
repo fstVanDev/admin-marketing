@@ -545,15 +545,6 @@ export const standartLinks = [
 
 export const links = [
    {
-      title: 'Projects',
-      links: [
-         {
-            name: 'projects',
-            icon: <FiShoppingBag />,
-         },
-      ],
-   },
-   {
       title: 'Dashboard',
       links: [
          {

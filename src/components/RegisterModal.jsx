@@ -19,7 +19,7 @@ const RegisterModal = () => {
             contentLabel="My dialog"
             className="mymodal"
             overlayClassName="myoverlay"
-            closeTimeoutMS={500}
+            closeTimeoutMS={300}
          >
             <div>My modal dialog.</div>
             <button onClick={toggleModal}>Close modal</button>

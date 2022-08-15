@@ -6,10 +6,10 @@ import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { TranscactionContext } from "../context/TransactionProvidert"
-import RegisterModal from "./RegisterModal";
 import avatar from "../data/avatar.jpg";
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
+import { StateContext } from "../context/StateProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
    <TooltipComponent content={title} position="BottomCenter">
@@ -39,8 +39,8 @@ const Navbar = () => {
       screenSize,
    } = useStateContext();
 
-   // const { currentAccount, connectWallet, walletDisconnect } = useContext(TranscactionContext)
-
+   const { connectWallet, disconnectWallet } = useContext(TranscactionContext)
+   const { userAccount } = useContext(StateContext)
 
    useEffect(() => {
       const handleResize = () => setScreenSize(window.innerWidth);
@@ -71,12 +71,6 @@ const Navbar = () => {
             icon={<AiOutlineMenu />}
          />
          <div className="flex">
-            {/* <NavButton
-          title="Cart"
-          customFunc={() => handleClick("cart")}
-          color={currentColor}
-          icon={<FiShoppingCart />}
-        /> */}
             <NavButton
                title="Chat"
                dotColor="#03C9D7"
@@ -92,30 +86,15 @@ const Navbar = () => {
                icon={<RiNotification3Line />}
             />
 
-            <RegisterModal />
 
-            {/* {!currentAccount ? (<button
-               type="button"
-               onClick={connectWallet}
-               className='flex flex-row justify-center items-center mt-0 mx-auto my-0bg-primary p-3 rounded-full cursor-pointer hover:bg-secondary bg-red-700'
-            >
-               <p className="text-white text-base font-semibold">
-                  Connect Wallet
-
-               </p>
-            </button>) : (
+            <div className="my-auto mx-[12px]">
                <button
-                  type="button"
-                  onClick={walletDisconnect}
-                  className='flex flex-row justify-center items-center mt-0 mx-auto my-0 bg-primary p-3 rounded-full cursor-pointer hover:bg-secondary bg-red-700'
+                  className={userAccount ? ("hover:drop-shadow-xl hover:bg-red-700 h-9 w-[180px] text-lg text-white rounded-lg bg-red-500") : ("hover:drop-shadow-xl hover:bg-green-700 w-full text-lg h-9 w-[180px] rounded-lg bg-green-500 text-white")}
+                  onClick={userAccount ? disconnectWallet : connectWallet}
                >
-                  <p className="text-white text-base font-semibold">
-                     Disconnect Wallet
-                  </p>
+                  {userAccount ? 'Disconnect Wallet' : 'Connect Wallet'}
                </button>
-            )
-
-            } */}
+            </div>
 
             <TooltipComponent content="Profile" position="BottomCenter">
                <div
