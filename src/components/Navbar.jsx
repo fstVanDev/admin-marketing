@@ -5,8 +5,8 @@ import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
-import { TranscactionContext } from "../context/TransactionContext"
-
+import { TranscactionContext } from "../context/TransactionProvidert"
+import RegisterModal from "./RegisterModal";
 import avatar from "../data/avatar.jpg";
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
@@ -39,7 +39,7 @@ const Navbar = () => {
       screenSize,
    } = useStateContext();
 
-   const { currentAccount, connectWallet, walletDisconnect } = useContext(TranscactionContext)
+   // const { currentAccount, connectWallet, walletDisconnect } = useContext(TranscactionContext)
 
 
    useEffect(() => {
@@ -92,7 +92,9 @@ const Navbar = () => {
                icon={<RiNotification3Line />}
             />
 
-            {!currentAccount ? (<button
+            <RegisterModal />
+
+            {/* {!currentAccount ? (<button
                type="button"
                onClick={connectWallet}
                className='flex flex-row justify-center items-center mt-0 mx-auto my-0bg-primary p-3 rounded-full cursor-pointer hover:bg-secondary bg-red-700'
@@ -113,7 +115,7 @@ const Navbar = () => {
                </button>
             )
 
-            }
+            } */}
 
             <TooltipComponent content="Profile" position="BottomCenter">
                <div
