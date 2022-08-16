@@ -24,10 +24,14 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
    axios(config).then(function (response) {
 
       // check register
-      setIsUserRegistered(true)
+      if (response.data.length === 0) {
+         setIsUserRegistered(false)
+      } else {
+         setIsUserRegistered(true)
+      }
 
       // set info into state
-      console.log(response.data[1].project_info, 'info about all user project (need register if null)')
+      console.log(response.data, 'info about all user project (need register if null)')
       setProjectsInfo(response.data[1].project_info)
 
 
@@ -43,7 +47,7 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
 
 
 // request for register new user in system
-export const registerNewUser = async (account, email, isRegistered) => {
+export const registerNewUser = async (account, email, setIsUserRegistered) => {
 
    var data = qs.stringify({
       'wallet_address': account,
@@ -63,7 +67,7 @@ export const registerNewUser = async (account, email, isRegistered) => {
    axios(config)
       .then(response => {
          console.log(response, 'register new user is success (request)')
-         isRegistered(true)
+         setIsUserRegistered(true)
       })
       .catch(error => {
          console.log(error)

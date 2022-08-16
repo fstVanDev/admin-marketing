@@ -14,7 +14,7 @@ const UserProfile = () => {
 
    const { currentColor, setIsClicked, initialState } = useStateContext();
 
-   const { userAccount, isUserRegistered,
+   const { userAccount, isUserRegistered, setIsUserRegistered,
       userEmail, setUserEmail,
       currentWallet, setCurrentWallet,
       projectName, setProjectName,
@@ -39,7 +39,7 @@ const UserProfile = () => {
    let registerUser = async (event) => {
       event.preventDefault();
 
-      registerNewUser(currentWallet, userEmail, isUserRegistered)
+      registerNewUser(userAccount, userEmail, setIsUserRegistered)
    }
 
    let createProject = async (event) => {
