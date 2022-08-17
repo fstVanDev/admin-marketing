@@ -5,11 +5,12 @@ const qs = require('qs')
 
 
 
+
+
 // request when user connect the wallet (check ther register and get info about projects)
 export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered, setProjectsInfo, toLocalStore) => {
-
    var data = qs.stringify({
-      'wallet_address': array[0]
+      'wallet_address': array[0] 
    });
    var config = {
       method: 'post',
@@ -100,6 +101,7 @@ export const registerNewProject = async (name, contract, url, type, account) => 
    axios(config)
       .then(response => {
          console.log(response, 'register new project is success (request)')
+         checkRegisterAndGetUserProjects()
       })
       .catch(error => {
          console.log(error)
@@ -137,4 +139,28 @@ export const getDataFromCurrentProject = async (projectsInfo, value, toLocalStor
    })
 }
 
+// get current project data 
+export const getCurrentProject = async(value) => {
 
+   const datas = window.localStorage.getItem('allProjectsData')
+   const userProjectsData = JSON.parse(datas)
+
+   var data = qs.stringify({
+      'project_id': userProjectsData[value].project_id
+   });
+   var config = {
+      method: 'post',
+      baseURL: `${process.env.REACT_APP_BACK_URL}/project_info`,
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config).then(function (response) {
+      console.log(response.data, 'current project (request)')
+      window.localStorage.setItem(`currentProject_${value}`, JSON.stringify(response.data))
+   }).catch(error => {
+      console.log(error)
+   })
+}

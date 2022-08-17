@@ -1,12 +1,10 @@
-import React from "react";
-import { BsCurrencyDollar } from "react-icons/bs";
+import React, { useContext } from "react";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosMore } from "react-icons/io";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
-
+import { StateContext } from "../context/StateProvider";
 import { Stacked, Pie, Button, LineChart, SparkLine } from "../components";
 import {
-  earningData,
   medicalproBranding,
   recentTransactions,
   weeklyStats,
@@ -14,6 +12,10 @@ import {
   SparklineAreaData,
   ecomPieChartData,
 } from "../data/dummy";
+import { MdOutlineSupervisorAccount } from 'react-icons/md';
+import { FiBarChart } from 'react-icons/fi';
+import { BsBoxSeam } from 'react-icons/bs';
+import { HiOutlineRefresh } from 'react-icons/hi';
 import { useStateContext } from "../context/ContextProvider";
 import product9 from "../data/product9.jpg";
 
@@ -31,8 +33,57 @@ const DropDown = ({ currentMode }) => (
   </div>
 );
 
-const Ecommerce = () => {
-  const { currentColor, currentMode } = useStateContext();
+const CurrentProject = () => {
+   const { currentColor, currentMode } = useStateContext();
+   
+   const { userAccount, isUserRegistered,
+       currentUserProject
+   } = useContext(StateContext)
+
+   const data = window.localStorage.getItem(`currentProject_${currentUserProject}`)
+
+   const userProjectsData = JSON.parse(data)
+
+
+   const earningData = [
+      {
+         icon: <MdOutlineSupervisorAccount />,
+         amount: `${userProjectsData.users_connected_wallet + userProjectsData.users_with_wallet + userProjectsData.users_without_wallet}`,
+         percentage: '-4%',
+         title: 'All users',
+         iconColor: '#03C9D7',
+         iconBg: '#E5FAFB',
+         pcColor: 'red-600',
+      },
+      {
+         icon: <BsBoxSeam />,
+         amount: `${userProjectsData.users_without_wallet}`,
+         percentage: '+23%',
+         title: 'Without wallet',
+         iconColor: 'rgb(255, 244, 229)',
+         iconBg: 'rgb(254, 201, 15)',
+         pcColor: 'green-600',
+      },
+      {
+         icon: <FiBarChart />,
+         amount: `${userProjectsData.users_with_wallet}`,
+         percentage: '+38%',
+         title: 'With wallet',
+         iconColor: 'rgb(228, 106, 118)',
+         iconBg: 'rgb(255, 244, 229)',
+
+         pcColor: 'green-600',
+      },
+      {
+         icon: <HiOutlineRefresh />,
+         amount: `${userProjectsData.users_connected_wallet}`,
+         percentage: '-12%',
+         title: 'Connected wallet',
+         iconColor: 'rgb(0, 194, 146)',
+         iconBg: 'rgb(235, 250, 242)',
+         pcColor: 'red-600',
+      },
+   ];
 
   return (
     <div className="mt-24">
@@ -372,4 +423,4 @@ const Ecommerce = () => {
   );
 };
 
-export default Ecommerce;
+export default CurrentProject;

@@ -23,6 +23,9 @@ import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 import product8 from './product8.jpg';
 
+import { StateContext } from '../context/StateProvider';
+
+
 export const gridOrderImage = (props) => (
    <div>
       <img
@@ -548,9 +551,17 @@ export const links = [
       title: 'Dashboard',
       links: [
          {
-            name: 'ecommerce',
+            name: 'Projects',
+            icon: <IoMdContacts />,
+         },
+         {
+            name: 'Home',
             icon: <FiShoppingBag />,
          },
+         {
+            name: 'General',
+            icon: <IoMdContacts />,
+         }
       ],
    },
 
@@ -628,12 +639,14 @@ export const chatData = [
    },
 ];
 
+
+
 export const earningData = [
    {
       icon: <MdOutlineSupervisorAccount />,
       amount: '39,354',
       percentage: '-4%',
-      title: 'Customers',
+      title: 'All users',
       iconColor: '#03C9D7',
       iconBg: '#E5FAFB',
       pcColor: 'red-600',
@@ -642,7 +655,7 @@ export const earningData = [
       icon: <BsBoxSeam />,
       amount: '4,396',
       percentage: '+23%',
-      title: 'Products',
+      title: 'Without wallet',
       iconColor: 'rgb(255, 244, 229)',
       iconBg: 'rgb(254, 201, 15)',
       pcColor: 'green-600',
@@ -651,7 +664,7 @@ export const earningData = [
       icon: <FiBarChart />,
       amount: '423,39',
       percentage: '+38%',
-      title: 'Sales',
+      title: 'With wallet',
       iconColor: 'rgb(228, 106, 118)',
       iconBg: 'rgb(255, 244, 229)',
 
@@ -661,7 +674,7 @@ export const earningData = [
       icon: <HiOutlineRefresh />,
       amount: '39,354',
       percentage: '-12%',
-      title: 'Refunds',
+      title: 'Connected wallet',
       iconColor: 'rgb(0, 194, 146)',
       iconBg: 'rgb(235, 250, 242)',
       pcColor: 'red-600',

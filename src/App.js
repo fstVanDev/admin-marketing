@@ -4,13 +4,16 @@ import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 import { Navbar, Sidebar, ThemeSettings } from './components';
-import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, RegisterNewUser } from './pages';
+import { CurrentProject, Orders, General, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Home } from './pages';
 import './App.css';
 
 import { useStateContext } from './context/ContextProvider';
 
 const App = () => {
    const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
+
+   const data = window.localStorage.getItem('allProjectsData')
+   const userProjectsData = JSON.parse(data)
 
    useEffect(() => {
       const currentThemeColor = localStorage.getItem('colorMode');
@@ -64,12 +67,27 @@ const App = () => {
                      {themeSettings && (<ThemeSettings />)}
 
                      <Routes>
+
                         {/* Project  */}
-                        <Route path="/projects" element={(<RegisterNewUser />)} />
+                        {userProjectsData ? (
+                           <>
+                              {(userProjectsData).map((item) => (
+                                 <Route
+                                    key={item.project_name}
+                                    path={`${((item.project_name).toLowerCase()).replace(/\s/g, '')}`}
+                                    element={(<CurrentProject />)}
+                                 />
+                              ))}
+                           </>
+                        ) : (
+                           null
+                        )}
 
                         {/* dashboard  */}
-                        <Route path="/" element={(<Ecommerce />)} />
-                        <Route path="/ecommerce" element={(<Ecommerce />)} />
+                        <Route path="/" element={(<Home />)} />
+                        <Route path="/Home" element={(<Home />)} />
+                        <Route path="/Projects" element={(<CurrentProject />)} />
+                        <Route path='/General' element={(<General />)} />
 
                         {/* pages  */}
                         <Route path="/orders" element={<Orders />} />

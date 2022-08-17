@@ -10,6 +10,7 @@ import avatar from "../data/avatar.jpg";
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
 import { StateContext } from "../context/StateProvider";
+import { justWatch } from "../context/RequestProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
    <TooltipComponent content={title} position="BottomCenter">
@@ -85,6 +86,14 @@ const Navbar = () => {
                color={currentColor}
                icon={<RiNotification3Line />}
             />
+
+            {/*   <div className="flex items-center justify-center ">
+               <div className="w-16 h-16 border-b-4 border-yellow-900 rounded-full animate-spin"></div>
+            </div>
+
+            <button className="text-white w-[90px] h-[44px] border-white" onClick={() => justWatch()}>
+               Just Watch
+            </button> */}
 
 
             <div className="my-auto mx-[12px]">
