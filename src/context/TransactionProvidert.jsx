@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { checkRegisterAndGetUserProjects } from './RequestProvider';
+import { checkRegisterAndGetUserProjects, getCurrentProjectbyProjectId, getDataSnapshotbyProjectId } from './RequestProvider';
 import { StateContext } from './StateProvider';
 import { LocalContext } from './LocalProvider';
 
@@ -22,9 +22,13 @@ export const TransactionProvider = ({ children }) => {
       useChainWallet, setUserChainWallet,
       isUserRegistered, setIsUserRegistered,
       projectId, setProjectId,
-      projectsInfo, setProjectsInfo } = useContext(StateContext)
+      projectsInfo, setProjectsInfo, setDataSnapshot, generalData, setGeneralData } = useContext(StateContext)
 
    const checkIfWalletConnected = async () => {
+
+      const data = window.localStorage.getItem('currentProject')
+      const data1 = JSON.parse(data)
+
       try {
          if (!ethereum) return alert('Please install Metamask!')
          const accounts = await ethereum.request({ method: 'eth_accounts' })
@@ -33,8 +37,9 @@ export const TransactionProvider = ({ children }) => {
             setUserAccount(accounts[0])
             setUserChainWallet(window.ethereum.networkVersion)
 
-            checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore)
-
+            checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore, userAccount)
+            getCurrentProjectbyProjectId(data1.project_id, setGeneralData)
+            getDataSnapshotbyProjectId(data1.project_id, setDataSnapshot)
          } else {
             console.log('none account in check wallet')
          }
@@ -51,7 +56,7 @@ export const TransactionProvider = ({ children }) => {
          setUserAccount(accounts[0])
          setUserChainWallet(window.ethereum.networkVersion)
 
-         checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore)
+         checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore, userAccount)
 
       } catch (error) {
          console.log(error);

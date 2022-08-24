@@ -1,6 +1,7 @@
 import React from 'react'
 
 import axios from 'axios'
+import { convertStringToValue } from '@syncfusion/ej2/maps';
 const qs = require('qs')
 
 
@@ -8,9 +9,9 @@ const qs = require('qs')
 
 
 // request when user connect the wallet (check ther register and get info about projects)
-export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered, setProjectsInfo, toLocalStore) => {
+export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered, setProjectsInfo, toLocalStore, userAccount) => {
    var data = qs.stringify({
-      'wallet_address': array[0] 
+      'wallet_address': array[0]
    });
    var config = {
       method: 'post',
@@ -32,14 +33,14 @@ export const checkRegisterAndGetUserProjects = async (array, setIsUserRegistered
       }
 
       // set info into state
-      console.log(response.data, 'info about all user project (need register if null)')
-      setProjectsInfo(response.data[1].project_info)
+      console.log(response, 'info about all user project (need register if null)')
+      if (typeof (response.data[1].project_info) !== 'undefined') {
+         setProjectsInfo(response.data.project_info)
 
-
-      //  <= setUserProjectsDataToLocalStore =>
-      toLocalStore(response)
-      console.log('check register user (request), get all projects')
-
+         //  <= setUserProjectsDataToLocalStore =>
+         toLocalStore(response)
+         console.log('check register user (request), get all projects')
+      }
 
    }).catch(error => {
       console.log(error)
@@ -110,40 +111,14 @@ export const registerNewProject = async (name, contract, url, type, account) => 
 
 
 
-// request when user click on one of his project (all info about current project)
-export const getDataFromCurrentProject = async (projectsInfo, value, toLocalStore, setCurrentUserProject) => {
-
-   var data = qs.stringify({
-      'project_id': projectsInfo[value].project_id
-   });
-   var config = {
-      method: 'post',
-      baseURL: `${process.env.REACT_APP_BACK_URL}/project_info`,
-      headers: {
-         'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: data
-   };
-
-   axios(config).then(function (response) {
-      // set info about current project
-      setCurrentUserProject(response.data)
-
-      // <= setUserCurrentProjectDataToLocalStore =>
-      toLocalStore(response)
-
-      console.log('get data from current project (request)')
-
-   }).catch(error => {
-      console.log(error)
-   })
-}
-
 // get current project data 
-export const getCurrentProject = async(value) => {
+export const getCurrentProject = async (value, setGeneralData, currentUserProject, setDataSnapshot) => {
 
    const datas = window.localStorage.getItem('allProjectsData')
    const userProjectsData = JSON.parse(datas)
+   console.log(datas)
+
+
 
    var data = qs.stringify({
       'project_id': userProjectsData[value].project_id
@@ -157,10 +132,205 @@ export const getCurrentProject = async(value) => {
       data: data
    };
 
-   axios(config).then(function (response) {
-      console.log(response.data, 'current project (request)')
-      window.localStorage.setItem(`currentProject_${value}`, JSON.stringify(response.data))
-   }).catch(error => {
-      console.log(error)
-   })
+   axios(config)
+      .then(function (response) {
+         console.log(response.data, 'current project (request)')
+         window.localStorage.setItem(`currentProject`, JSON.stringify(response.data))
+
+         const datas1 = window.localStorage.getItem(`currentProject`)
+         // console.log(currentUserProject, '???')
+
+         const userProjectsData1 = JSON.parse(datas1)
+         console.log(datas1)
+
+
+         let data2 = qs.stringify({
+            'token_address': userProjectsData1.token_contract,
+            'chain_id': '56'
+         })
+         var config2 = {
+            method: 'post',
+            url: `${process.env.REACT_APP_BACK_URL}/token_info`,
+
+            headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data2
+         }
+
+         axios(config2)
+            .then(function (response) {
+               console.log(JSON.stringify(response.data), 'from just watch');
+               setGeneralData(response.data)
+
+
+               console.log('!?!?')
+            })
+            .catch(function (error) {
+               console.log(error);
+            })
+
+
+      }
+      ).catch(error => {
+         console.log(error)
+      })
+}
+
+
+export const justWatch = async (value, setGeneralData) => {
+
+   const datas = window.localStorage.getItem(`currentProject_${value}`)
+   const userProjectsData = JSON.parse(datas)
+
+   console.log(userProjectsData.token_contract, 'token address')
+
+   var data = qs.stringify({
+      'token_address': userProjectsData.token_contract,
+      'chain_id': '56'
+   });
+   console.log(data)
+   var config = {
+      method: 'post',
+      url: `${process.env.REACT_APP_BACK_URL}/token_info`,
+
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(function (response) {
+         console.log(JSON.stringify(response.data), 'from just watch');
+         setGeneralData(response.data)
+         console.log(response.data)
+      })
+      .catch(function (error) {
+         console.log(error);
+      });
+}
+
+
+// get data_snapshot
+export const getDataSnapshot = async (value, setDataSnapshot) => {
+
+   const datas = window.localStorage.getItem('allProjectsData')
+   const userProjectsData = JSON.parse(datas)
+   console.log(userProjectsData[value].project_id)
+
+   var data = qs.stringify({
+      'from_date': '2022-08-12',
+      'project_id': userProjectsData[value].project_id
+   });
+   console.log(data)
+   var config = {
+      method: 'post',
+      url: `${process.env.REACT_APP_BACK_URL}/data_snapshot`,
+
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(function (response) {
+         console.log(response.data, 'from snapshot');
+         setDataSnapshot(response.data)
+      })
+      .catch(function (error) {
+         console.log(error);
+      });
+}
+
+
+
+export const getCurrentProjectbyProjectId = async (project_id, setGeneralData) => {
+
+
+   var data = qs.stringify({
+      'project_id': project_id
+   });
+   var config = {
+      method: 'post',
+      baseURL: `${process.env.REACT_APP_BACK_URL}/project_info`,
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(function (response) {
+         console.log(response.data, 'current project (request)')
+         window.localStorage.setItem(`currentProject`, JSON.stringify(response.data))
+
+         const datas1 = window.localStorage.getItem(`currentProject`)
+         // console.log(currentUserProject, '???')
+
+         const userProjectsData1 = JSON.parse(datas1)
+         console.log(datas1)
+
+
+         let data2 = qs.stringify({
+            'token_address': userProjectsData1.token_contract,
+            'chain_id': '56'
+         })
+         var config2 = {
+            method: 'post',
+            url: `${process.env.REACT_APP_BACK_URL}/token_info`,
+
+            headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: data2
+         }
+
+         axios(config2)
+            .then(function (response) {
+               console.log(JSON.stringify(response.data), 'from just watch');
+               setGeneralData(response.data)
+
+
+               console.log('!?!?')
+            })
+            .catch(function (error) {
+               console.log(error);
+            })
+
+
+      }
+      ).catch(error => {
+         console.log(error)
+      })
+}
+
+
+export const getDataSnapshotbyProjectId = async (project_id, setDataSnapshot) => {
+
+
+   var data = qs.stringify({
+      'from_date': '2022-08-12',
+      'project_id': project_id
+   });
+   console.log(data)
+   var config = {
+      method: 'post',
+      url: `${process.env.REACT_APP_BACK_URL}/data_snapshot`,
+
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(function (response) {
+         console.log(response.data, 'from snapshot');
+         setDataSnapshot(response.data)
+      })
+      .catch(function (error) {
+         console.log(error);
+      });
 }

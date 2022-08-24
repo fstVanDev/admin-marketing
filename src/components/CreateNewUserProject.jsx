@@ -1,4 +1,4 @@
-import React, { useContext, Fragment, useEffect } from 'react'
+import React, { useContext, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 
 import { StateContext } from '../context/StateProvider'

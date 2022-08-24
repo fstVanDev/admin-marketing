@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState} from "react";
 import {
   ChartComponent,
   SeriesCollectionDirective,
@@ -9,17 +9,76 @@ import {
   StackingColumnSeries,
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
-
+import GeneralJSON from '../General.json'
+import BigNumber from 'bignumber.js'
 import {
-  stackedCustomSeries,
   stackedPrimaryXAxis,
   stackedPrimaryYAxis,
 } from "../../data/dummy";
 import { useStateContext } from "../../context/ContextProvider";
 
 const Stacked = ({ width, height }) => {
-  const { currentMode } = useStateContext();
+   const { currentMode } = useStateContext();
 
+
+   const [arr, setArr] = useState(null)
+   const data = (GeneralJSON.value.audits.liquidity.value.pools).slice(0, 7)
+   function dataBUSD() {
+      const BUSDArray = []
+      for (let i = 0; i < data.length; i++) {
+         const busd = new BigNumber(data[i].valueBusd.hex)
+         BUSDArray.push(busd / 18)
+      }
+      return BUSDArray
+   }
+   const dataBase = {}
+
+   
+   const stackedChartData = [
+      [
+         { x: 'Jan', y: 111.1 },
+         { x: 'Feb', y: 127.3 },
+         { x: 'Mar', y: 143.9 },
+         { x: 'Apr', y: 159.9 },
+         { x: 'May', y: 159.9 },
+         { x: 'Jun', y: 159.9 },
+         { x: 'July', y: 159.9 },
+      ],
+      [
+         { x: 'Jan', y: 111.1 },
+         { x: 'Feb', y: 127.3 },
+         { x: 'Mar', y: 143.4 },
+         { x: 'Apr', y: 159.9 },
+         { x: 'May', y: 159.9 },
+         { x: 'Jun', y: 159.9 },
+         { x: 'July', y: 159.9 },
+      ],
+   ];
+
+   const stackedCustomSeries = [
+
+      {
+         dataSource: stackedChartData[0],
+         xName: 'x',
+         yName: 'y',
+         name: 'BUSD',
+         type: 'StackingColumn',
+         background: 'blue',
+
+      },
+
+      {
+         dataSource: stackedChartData[1],
+         xName: 'x',
+         yName: 'y',
+         name: 'Base',
+         type: 'StackingColumn',
+         background: 'red',
+
+      },
+
+   ];
+   
   return (
     <ChartComponent
       id="charts"
@@ -31,7 +90,7 @@ const Stacked = ({ width, height }) => {
       tooltip={{ enable: true }}
       background={currentMode === "Dark" ? "#33373E" : "#fff"}
       legendSettings={{ background: "white" }}
-    >
+     >
       <Inject services={[StackingColumnSeries, Category, Legend, Tooltip]} />
       <SeriesCollectionDirective>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}

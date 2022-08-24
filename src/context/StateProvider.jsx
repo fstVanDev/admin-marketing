@@ -24,7 +24,8 @@ export const StateProvider = ({ children }) => {
    const [projectId, setProjectId] = useState(null)
    const [projectsInfo, setProjectsInfo] = useState(null) // user projects info (0: {project_id: ..., project_name:...})
    const [currentUserProject, setCurrentUserProject] = useState(null)
-
+   const [generalData, setGeneralData] = useState(null)
+   const [dataSnapshot, setDataSnapshot] = useState(null)
 
    return (
       <StateContext.Provider value={{
@@ -39,7 +40,9 @@ export const StateProvider = ({ children }) => {
          projectUrl, setProjectUrl,
          projectType, setProjectType,
          userEmail, setUserEmail,
-         currentWallet, setCurrentWallet
+         currentWallet, setCurrentWallet,
+         generalData, setGeneralData,
+         dataSnapshot, setDataSnapshot
       }}>
          {children}
       </StateContext.Provider>

@@ -45,7 +45,7 @@ const RegisterUser = () => {
                className='text-xl mt-5 text-white rounded-lg p-3 hover:bg-main-dark-bg w-full hover:bg-light-gray'
                type="submit"
             >
-               Create
+               Register
             </button>
          </form>
       </>

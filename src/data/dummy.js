@@ -550,18 +550,18 @@ export const links = [
    {
       title: 'Dashboard',
       links: [
-         {
-            name: 'Projects',
-            icon: <IoMdContacts />,
-         },
+         // {
+         //    name: 'Projects',
+         //    icon: <IoMdContacts />,
+         // },
          {
             name: 'Home',
             icon: <FiShoppingBag />,
          },
-         {
-            name: 'General',
-            icon: <IoMdContacts />,
-         }
+         // {
+         //    name: 'General',
+         //    icon: <IoMdContacts />,
+         // }
       ],
    },
 
@@ -582,6 +582,44 @@ export const links = [
          },
       ],
    },
+   {
+      title: 'Charts',
+      links: [
+         {
+            name: 'line',
+            icon: <AiOutlineStock />,
+         },
+         {
+            name: 'area',
+            icon: <AiOutlineAreaChart />,
+         },
+
+         {
+            name: 'bar',
+            icon: <AiOutlineBarChart />,
+         },
+         {
+            name: 'pie',
+            icon: <FiPieChart />,
+         },
+         {
+            name: 'financial',
+            icon: <RiStockLine />,
+         },
+         {
+            name: 'color-mapping',
+            icon: <BsBarChart />,
+         },
+         {
+            name: 'pyramid',
+            icon: <GiLouvrePyramid />,
+         },
+         {
+            name: 'stacked',
+            icon: <AiOutlineBarChart />,
+         },
+      ],
+   }
 ]
 
 export const cartData = [
@@ -3046,62 +3084,17 @@ export const scheduleData = [
 
 export const lineChartData = [
    [
-      { x: new Date(2005, 0, 1), y: 21 },
-      { x: new Date(2006, 0, 1), y: 24 },
-      { x: new Date(2007, 0, 1), y: 36 },
-      { x: new Date(2008, 0, 1), y: 38 },
-      { x: new Date(2009, 0, 1), y: 54 },
-      { x: new Date(2010, 0, 1), y: 57 },
-      { x: new Date(2011, 0, 1), y: 70 },
-      { x: new Date(2012, 0, 1), y: 21 },
-      { x: new Date(2013, 0, 1), y: 24 },
-      { x: new Date(2014, 0, 1), y: 36 },
-      { x: new Date(2015, 0, 1), y: 38 },
-      { x: new Date(2016, 0, 1), y: 54 },
-      { x: new Date(2017, 0, 1), y: 57 },
-      { x: new Date(2018, 0, 1), y: 70 },
-      { x: new Date(2019, 0, 1), y: 21 },
-      { x: new Date(2020, 0, 1), y: 24 },
-      { x: new Date(2021, 0, 1), y: 36 },
-      { x: new Date(2022, 0, 1), y: 38 },
-      { x: new Date(2023, 0, 1), y: 54 },
-      { x: new Date(2024, 0, 1), y: 57 },
-      { x: new Date(2025, 0, 1), y: 70 },
-      { x: new Date(2026, 0, 1), y: 21 },
-      { x: new Date(2027, 0, 1), y: 24 },
-      { x: new Date(2028, 0, 1), y: 36 },
-      { x: new Date(2029, 0, 1), y: 38 },
-      { x: new Date(2030, 0, 1), y: 54 },
-      { x: new Date(2031, 0, 1), y: 57 },
-      { x: new Date(2032, 0, 1), y: 70 },
-      { x: new Date(2033, 0, 1), y: 21 },
-      { x: new Date(2034, 0, 1), y: 24 },
-      { x: new Date(2035, 0, 1), y: 36 },
-      { x: new Date(2036, 0, 1), y: 38 },
-      { x: new Date(2037, 0, 1), y: 54 },
-      { x: new Date(2038, 0, 1), y: 57 },
-      { x: new Date(2039, 0, 1), y: 70 },
+      { x: new Date(2005, 0, 1), y: 21 },    
    ],
    [
       { x: new Date(2005, 0, 1), y: 28 },
-      { x: new Date(2006, 0, 1), y: 44 },
-      { x: new Date(2007, 0, 1), y: 48 },
-      { x: new Date(2008, 0, 1), y: 50 },
-      { x: new Date(2009, 0, 1), y: 66 },
-      { x: new Date(2010, 0, 1), y: 78 },
-      { x: new Date(2011, 0, 1), y: 84 },
    ],
 
    [
       { x: new Date(2005, 0, 1), y: 10 },
-      { x: new Date(2006, 0, 1), y: 20 },
-      { x: new Date(2007, 0, 1), y: 30 },
-      { x: new Date(2008, 0, 1), y: 39 },
-      { x: new Date(2009, 0, 1), y: 50 },
-      { x: new Date(2010, 0, 1), y: 70 },
-      { x: new Date(2011, 0, 1), y: 100 },
    ],
 ];
+
 export const dropdownData = [
    {
       Id: '1',

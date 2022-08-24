@@ -11,18 +11,16 @@ import { LocalProvider } from './context/LocalProvider'
 
 
 ReactDOM.render(
-   <StateProvider>
-      <LocalProvider>
-
-         <TransactionProvider>
-            <React.StrictMode>
+   <React.StrictMode>
+      <StateProvider>
+         <LocalProvider>
+            <TransactionProvider>
                <ContextProvider>
                   <App />
                </ContextProvider>
-            </React.StrictMode>
-         </TransactionProvider>
-      </LocalProvider>
-
-   </StateProvider >,
+            </TransactionProvider>
+         </LocalProvider>
+      </StateProvider >
+   </React.StrictMode>,
    document.getElementById('root'),
 );
