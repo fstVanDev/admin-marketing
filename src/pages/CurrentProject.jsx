@@ -463,12 +463,12 @@ const CurrentProject = () => {
                </div>
 
 
-               <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-6 rounded-2xl w-[880px] mx-auto">
-                  <div className="flex justify-between">
+               <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-6 rounded-2xl w-[880px] mx-auto justify-between">
+                  <div className="flex ">
                      <p className="font-semibold text-xl">General Data</p>
                   </div>
 
-                  <div className="mt-10 flex gap-10 flex-wrap justify-between">
+                  <div className="mt-10 column gap-10 flex-wrap justify-between">
                      <div className="border-r-1 border-color m-4 mr-0 pr-6">
                         <div>
                            <div>
@@ -541,8 +541,8 @@ const CurrentProject = () => {
                      </div>
 
 
-                     <div>
-                        <div className='pr-10  relative'>
+                     <div className="m-4 mr-0 mt-6">
+                        <div className='pr-10  relative '>
                            <div>
                               <span className="text-xl text-white">
                                  {generalData[0].token.network}

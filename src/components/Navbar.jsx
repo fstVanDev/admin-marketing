@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
@@ -36,7 +36,7 @@ const Navbar = () => {
       handleClick,
       isClicked,
       setScreenSize,
-      screenSize,
+      screenSize, initialState, setIsClicked
    } = useStateContext();
 
    const { connectWallet, disconnectWallet } = useContext(TranscactionContext)
@@ -63,6 +63,32 @@ const Navbar = () => {
    const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
 
+   function useOutsideAlerter(ref) {
+      useEffect(() => {
+         /**
+          * Alert if clicked on outside of element
+          */
+         function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+              setIsClicked(initialState)
+            }
+         }
+         // Bind the event listener
+         document.addEventListener("mousedown", handleClickOutside);
+         return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+         };
+      }, [ref]);
+   }
+
+   function OutsideAlerter(props) {
+      const wrapperRef = useRef(null);
+      useOutsideAlerter(wrapperRef);
+
+      return <div ref={wrapperRef}>{props.children}</div>;
+   }
+
 
 
    return (
@@ -74,7 +100,7 @@ const Navbar = () => {
             icon={<AiOutlineMenu />}
          />
          <div className="flex">
-            <NavButton
+            {/* <NavButton
                title="Chat"
                dotColor="#03C9D7"
                customFunc={() => handleClick("chat")}
@@ -87,7 +113,7 @@ const Navbar = () => {
                customFunc={() => handleClick("notification")}
                color={currentColor}
                icon={<RiNotification3Line />}
-            />
+            /> */}
 
             {/* <div className="flex items-center justify-center ">
                <div className="w-16 h-16 border-b-4 border-yellow-900 rounded-full animate-spin"></div>
@@ -124,7 +150,7 @@ const Navbar = () => {
             {isClicked.cart && <Cart />}
             {isClicked.chat && <Chat />}
             {isClicked.notification && <Notification />}
-            {isClicked.userProfile && <UserProfile />}
+            {isClicked.userProfile && <OutsideAlerter><UserProfile /></OutsideAlerter>}
 
          </div>
       </div>
