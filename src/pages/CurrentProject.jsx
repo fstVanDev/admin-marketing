@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoIosMore } from "react-icons/io";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
@@ -56,7 +56,7 @@ const CurrentProject = () => {
 
    const shortenAddress = (address) => `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
 
-   const loader = () => {
+   const Loader = () => {
       return (
          <div className="flex items-center justify-center ">
             <div className="w-16 h-16 border-b-4 border-yellow-900 rounded-full animate-spin"></div>
@@ -67,7 +67,7 @@ const CurrentProject = () => {
    const earningData = [
       {
          icon: <MdOutlineSupervisorAccount />,
-         amount: `${userProjectsData ? userProjectsData.users_connected_wallet + userProjectsData.users_with_wallet + userProjectsData.users_without_wallet : loader}`,
+         amount: `${userProjectsData ? userProjectsData.users_connected_wallet + userProjectsData.users_with_wallet + userProjectsData.users_without_wallet : <Loader />}`,
          // percentage: dataSnapshot[0].,
          title: 'All users',
          iconColor: '#03C9D7',
@@ -76,7 +76,7 @@ const CurrentProject = () => {
       },
       {
          icon: <BsBoxSeam />,
-         amount: `${userProjectsData ? userProjectsData.users_without_wallet : loader}`,
+         amount: `${userProjectsData ? userProjectsData.users_without_wallet : <Loader />}`,
          // percentage: ((dataSnapshot[dataSnapshot.length - 2].users_without_wallet * 100) / dataSnapshot[dataSnapshot.length - 1].users_without_wallet).toFixed(1) + ' %',
 
          title: 'Without wallet',
@@ -86,7 +86,7 @@ const CurrentProject = () => {
       },
       {
          icon: <FiBarChart />,
-         amount: `${userProjectsData ? userProjectsData.users_with_wallet : loader}`,
+         amount: `${userProjectsData ? userProjectsData.users_with_wallet : <Loader />}`,
          percentage: '+38%',
          title: 'With wallet',
          iconColor: 'rgb(228, 106, 118)',
@@ -96,7 +96,7 @@ const CurrentProject = () => {
       },
       {
          icon: <HiOutlineRefresh />,
-         amount: `${userProjectsData ? userProjectsData.users_connected_wallet : loader}`,
+         amount: `${userProjectsData ? userProjectsData.users_connected_wallet : <Loader />}`,
          percentage: '-12%',
          title: 'Connected wallet',
          iconColor: 'rgb(0, 194, 146)',
@@ -175,6 +175,26 @@ const CurrentProject = () => {
       },
    ];
 
+   const [copyText, setCopyText] = React.useState("");
+
+   const CopyToClipElement = ({ text }) => {
+      const myRef = React.useRef(null);
+      const [data, setData] = React.useState(text);
+      React.useEffect(() => setData(text), [text]);
+
+      React.useEffect(() => {
+         if (myRef.current && data) {
+            myRef.current.select();
+            document.execCommand("copy");
+            setData(null);
+         }
+      }, [data, myRef.current]);
+
+      return <div>{data && <textarea ref={myRef}>{data}</textarea>} </div>;
+   };
+
+
+   
    return (
       <div className="mt-24">
          {generalData ? (
@@ -475,6 +495,12 @@ const CurrentProject = () => {
                               <span className="text-xl font-semibold">
                                  {shortenAddress(generalData[0].token.address)}
                               </span>
+                              <>
+                                 <button className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-green-600 ml-10 mt-1 text-xs" onClick={() => setCopyText(generalData[0].token.address)}>
+                                    Copy address
+                                 </button>
+                                 <CopyToClipElement text={copyText} />
+                              </>
                            </div>
                            <p className="text-gray-500 mt-1">Address</p>
                         </div>
@@ -487,6 +513,14 @@ const CurrentProject = () => {
                                  {generalData[0].token.symbol}
                               </span>
                               <p className="text-gray-500 mt-1">Token name</p>
+                           </div>
+                        </div>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {generalData[0].token.decimals}
+                              </span>
+                              <p className="text-gray-500 mt-1">Decimals</p>
                            </div>
                         </div>
                         <div className="mt-8">
@@ -573,12 +607,12 @@ const CurrentProject = () => {
                               </span>
                               <p className="text-gray-500 mt-1">Owner</p>
                            </div>
-                           <p className="mt-4">
+                           <div className="mt-4">
                               <span className="text-xl text-white">
                                  {generalData[0].token.ownerSupply ? generalData[0].token.ownerSupply : 'Enable to fetch'}
                               </span>
                               <p className="text-gray-500 mt-1">Owner supply</p>
-                           </p>
+                           </div>
                            <div className="mt-4">
                               <span className="text-xl text-white">
                                  {generalData[0].token.burntSupply}
@@ -630,7 +664,7 @@ const CurrentProject = () => {
                </div>
             </>
          ) : (
-            loader
+            <Loader />
          )}
       </div>
    );

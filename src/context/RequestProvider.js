@@ -78,14 +78,16 @@ export const registerNewUser = async (account, email, setIsUserRegistered) => {
 
 
 // request for register new project in system
-export const registerNewProject = async (name, contract, url, type, account) => {
+export const registerNewProject = async (name, contract, url, type, account, setIsCreate, chain) => {
 
+   
    var data = qs.stringify({
       'project_name': name,
       'token_contract': contract,
       'project_url': url,
       'project_type': type,
-      'owner_address': account
+      'owner_address': account,
+      'chain_id': Number(chain)
    });
 
 
@@ -103,6 +105,7 @@ export const registerNewProject = async (name, contract, url, type, account) => 
       .then(response => {
          console.log(response, 'register new project is success (request)')
          checkRegisterAndGetUserProjects()
+         setIsCreate(true)
       })
       .catch(error => {
          console.log(error)
@@ -160,11 +163,11 @@ export const getCurrentProject = async (value, setGeneralData, currentUserProjec
 
          axios(config2)
             .then(function (response) {
-               console.log(JSON.stringify(response.data), 'from just watch');
+               // console.log(JSON.stringify(response.data), 'from just watch');
                setGeneralData(response.data)
 
 
-               console.log(response.data, 'from just watch')
+               console.log(response.data, 'from Moonarch')
             })
             .catch(function (error) {
                console.log(error);
@@ -289,11 +292,9 @@ export const getCurrentProjectbyProjectId = async (project_id, setGeneralData) =
 
          axios(config2)
             .then(function (response) {
-               console.log(JSON.stringify(response.data), 'from just watch');
                setGeneralData(response.data)
 
-
-               console.log('!?!?')
+               console.log(response.data, 'from Moonarch')
             })
             .catch(function (error) {
                console.log(error);

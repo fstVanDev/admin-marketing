@@ -70,7 +70,7 @@ const Navbar = () => {
           */
          function handleClickOutside(event) {
             if (ref.current && !ref.current.contains(event.target)) {
-              setIsClicked(initialState)
+               setIsClicked(initialState)
             }
          }
          // Bind the event listener
@@ -150,7 +150,11 @@ const Navbar = () => {
             {isClicked.cart && <Cart />}
             {isClicked.chat && <Chat />}
             {isClicked.notification && <Notification />}
-            {isClicked.userProfile && <OutsideAlerter><UserProfile /></OutsideAlerter>}
+            {isClicked.userProfile &&
+               // <OutsideAlerter>
+               <UserProfile />
+               // </OutsideAlerter>
+            }
 
          </div>
       </div>

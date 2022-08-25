@@ -78,7 +78,7 @@ const UserProfile = () => {
 
    return (
       <div >
-         <div className={"nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96"} >
+         <div className={"nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-[440px]"} >
             { isOpen ? (
                <>
                   {userAccount && isUserRegistered ? (
@@ -100,11 +100,11 @@ const UserProfile = () => {
                   </div>
 
                   <div className="flex gap-5 items-center mt-6 border-color pb-6">
-                     <img
+                     {/* <img
                         className="rounded-full h-24 w-24"
                         src={avatar}
                         alt="user-profile"
-                     />
+                     /> */}
                      <div>
                         <div className="font-semibold text-lg dark:text-gray-200">
                            <p>Account address: </p>

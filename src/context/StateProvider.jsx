@@ -15,6 +15,7 @@ export const StateProvider = ({ children }) => {
    const [tokenContract, setTokenContract] = useState(null)
    const [projectUrl, setProjectUrl] = useState(null)
    const [projectType, setProjectType] = useState(null)
+   const [chainId, setChainId] = useState(null)
 
    // Users registration data 
    const [userEmail, setUserEmail] = useState(null);
@@ -26,6 +27,7 @@ export const StateProvider = ({ children }) => {
    const [currentUserProject, setCurrentUserProject] = useState(null)
    const [generalData, setGeneralData] = useState(null)
    const [dataSnapshot, setDataSnapshot] = useState(null)
+   const [isCreate, setIsCreate] = useState(false)
 
    return (
       <StateContext.Provider value={{
@@ -42,7 +44,9 @@ export const StateProvider = ({ children }) => {
          userEmail, setUserEmail,
          currentWallet, setCurrentWallet,
          generalData, setGeneralData,
-         dataSnapshot, setDataSnapshot
+         dataSnapshot, setDataSnapshot,
+         isCreate, setIsCreate,
+         chainId, setChainId
       }}>
          {children}
       </StateContext.Provider>
