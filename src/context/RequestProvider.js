@@ -164,7 +164,7 @@ export const getCurrentProject = async (value, setGeneralData, currentUserProjec
                setGeneralData(response.data)
 
 
-               console.log('!?!?')
+               console.log(response.data, 'from just watch')
             })
             .catch(function (error) {
                console.log(error);

@@ -254,8 +254,8 @@ const CurrentProject = () => {
                   </div>
                   <div>
 
-
-                     <div
+                     {/* Earnings */}
+                     {/* <div
                         className=" rounded-2xl md:w-400 p-4 m-3"
                         style={{ backgroundColor: currentColor }}
                      >
@@ -281,10 +281,10 @@ const CurrentProject = () => {
                               color="rgb(242, 252, 253)"
                            />
                         </div>
-                     </div>
+                     </div> */}
 
-
-                     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl md:w-400 p-8 m-3 flex justify-center items-center gap-10">
+                     {/* 43.246 */}
+                     {/* <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl md:w-400 p-8 m-3 flex justify-center items-center gap-10">
                         <div>
                            <p className="text-2xl font-semibold ">$43,246</p>
                            <p className="text-gray-400">Yearly sales</p>
@@ -298,7 +298,7 @@ const CurrentProject = () => {
                               height="160px"
                            />
                         </div>
-                     </div>
+                     </div> */}
                   </div>
                </div>
 
@@ -375,7 +375,7 @@ const CurrentProject = () => {
                         </div>
                      </div>
                   </div>
-                  <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
+                  {/* <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
                      <div className="flex justify-between">
                         <p className="text-xl font-semibold">MedicalPro Branding</p>
                         <button
@@ -429,8 +429,8 @@ const CurrentProject = () => {
                         </div>
                      </div>
 
-                  </div>
-                  <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
+                  </div> */}
+                  {/* <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
                      <div className="flex justify-between">
                         <p className="text-xl font-semibold">Daily Activities</p>
                         <button
@@ -459,7 +459,7 @@ const CurrentProject = () => {
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> */}
                </div>
 
 
@@ -492,7 +492,7 @@ const CurrentProject = () => {
                         <div className="mt-8">
                            <div>
                               <span className="text-xl font-semibold">
-                                 {generalData[1].price_usd}
+                                 {(generalData[1].price_usd).toFixed(0)}
                               </span>
                               <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
                                  USD
@@ -503,7 +503,10 @@ const CurrentProject = () => {
                         <div className="mt-8">
                            <div>
                               <span className="text-xl font-semibold">
-                                 {generalData[1].liquidity}
+                                 {(generalData[1].liquidity).toFixed(2)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 BNB
                               </span>
                               <p className="text-gray-500 mt-1">Liquidity</p>
                            </div>
@@ -511,7 +514,7 @@ const CurrentProject = () => {
                         <div className="mt-8">
                            <div>
                               <span className="text-xl font-semibold">
-                                 {generalData[1].liquidity_usd}
+                                 {(generalData[1].liquidity_usd).toFixed(0)}
                               </span>
                               <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
                                  USD
@@ -522,7 +525,10 @@ const CurrentProject = () => {
                         <div className="mt-8">
                            <div>
                               <span className="text-xl font-semibold">
-                                 {generalData[1].volume_24h}
+                                 {(generalData[1].volume_24h).toFixed(2)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 BNB
                               </span>
                               <p className="text-gray-500 mt-1">Volume 24h</p>
                            </div>
@@ -530,7 +536,7 @@ const CurrentProject = () => {
                         <div className="mt-8">
                            <div>
                               <span className="text-xl font-semibold">
-                                 {generalData[1].volume_24h_usd}
+                                 {(generalData[1].volume_24h_usd).toFixed(0)}
                               </span>
                               <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
                                  USD
@@ -553,23 +559,23 @@ const CurrentProject = () => {
                               <span className="text-xl text-white">
                                  {String(generalData[0].token.verified)}
                               </span>
-                              <p className="text-gray-500 mt-1"> Verified</p>
+                              <p className="text-gray-500 mt-1"> Verified contract</p>
                            </div>
                            <div className="mt-4">
                               <span className="text-xl text-white">
-                                 {generalData[0].token.creator}
+                                 {generalData[0].token.creator ? generalData[0].token.creator : 'Enable to fetch'}
                               </span>
                               <p className="text-gray-500 mt-1">Creator</p>
                            </div>
                            <div className="mt-4">
                               <span className="text-xl text-white">
-                                 {generalData[0].token.owner}
+                                 {generalData[0].token.owner ? generalData[0].token.owner : 'Enable to fetch'}
                               </span>
                               <p className="text-gray-500 mt-1">Owner</p>
                            </div>
                            <p className="mt-4">
                               <span className="text-xl text-white">
-                                 {generalData[0].token.ownerSupply}
+                                 {generalData[0].token.ownerSupply ? generalData[0].token.ownerSupply : 'Enable to fetch'}
                               </span>
                               <p className="text-gray-500 mt-1">Owner supply</p>
                            </p>

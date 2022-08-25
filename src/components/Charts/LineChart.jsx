@@ -19,7 +19,6 @@ import { useStateContext } from "../../context/ContextProvider";
 const LineChart = () => {
    const { currentMode } = useStateContext();
    const { dataSnapshot } = useContext(StateContext)
-   console.log(dataSnapshot, 'hello')
 
    const lineChartData = [
       // without wallet
@@ -41,7 +40,6 @@ const LineChart = () => {
    dataSnapshot.map((item) => (
       lineChartData[2].push({ x: item.timestamp, y: item.users_connected_wallet })))
 
-   console.log(lineChartData, 'hello')
 
    const lineCustomSeries = [
       {

@@ -73,7 +73,6 @@ const App = () => {
          connectWallet()
       } else if (accounts[0] === userAccount) {
         
-         console.log('hello matherfacka')
          if (window.localStorage.getItem('currentProject') !== null && window.localStorage.getItem('currentProject') !== 'undefined') {
             connectWallet()
             console.log(userAccount)
