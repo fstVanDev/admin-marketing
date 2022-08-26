@@ -1,6 +1,5 @@
 /* eslint-disable no-lone-blocks */
 import React, { useContext, useState, useEffect, useRef } from "react";
-import "./styles.css";
 import { useStateContext } from "../context/ContextProvider";
 import { StateContext } from '../context/StateProvider'
 import RegisterUser from "./RegisterUser";

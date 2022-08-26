@@ -9,7 +9,6 @@ import {
   StackingColumnSeries,
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
-import GeneralJSON from '../General.json'
 import BigNumber from 'bignumber.js'
 import {
   stackedPrimaryXAxis,
@@ -18,20 +17,7 @@ import {
 import { useStateContext } from "../../context/ContextProvider";
 
 const Stacked = ({ width, height }) => {
-   const { currentMode } = useStateContext();
-
-
-   const [arr, setArr] = useState(null)
-   const data = (GeneralJSON.value.audits.liquidity.value.pools).slice(0, 7)
-   function dataBUSD() {
-      const BUSDArray = []
-      for (let i = 0; i < data.length; i++) {
-         const busd = new BigNumber(data[i].valueBusd.hex)
-         BUSDArray.push(busd / 18)
-      }
-      return BUSDArray
-   }
-   const dataBase = {}
+   const { currentMode } = useStateContext();  
 
    
    const stackedChartData = [

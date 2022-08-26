@@ -19,7 +19,6 @@ import {
 import { ChartsHeader } from "../../components";
 import { useStateContext } from "../../context/ContextProvider";
 import { ethers } from "ethers";
-import GeneralJSON from '../../components/General.json'
 
 const Bar = () => {
    const { currentMode } = useStateContext();

@@ -30,6 +30,7 @@ export const StateProvider = ({ children }) => {
    const [isCreate, setIsCreate] = useState(false)
    const [isMonarch, setIsMonarch] = useState(false)
    const [isShapshot, setIsSnapshot] = useState(false)
+   const [isCurrent, setIsCurrent] = useState(true)
 
    return (
       <StateContext.Provider value={{
@@ -50,7 +51,8 @@ export const StateProvider = ({ children }) => {
          isCreate, setIsCreate,
          chainId, setChainId,
          isMonarch, setIsMonarch,
-         isShapshot, setIsSnapshot
+         isShapshot, setIsSnapshot,
+         isCurrent, setIsCurrent
       }}>
          {children}
       </StateContext.Provider>

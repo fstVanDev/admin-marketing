@@ -5,7 +5,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { getCurrentProject, getDataSnapshot } from './context/RequestProvider'
 
 import { Navbar, Sidebar, ThemeSettings } from './components';
-import { CurrentProject, Orders, General, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Home, Moonarch, DataSnapshot } from './pages';
+import { CurrentProject, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Home, Moonarch, DataSnapshot } from './pages';
 import './App.css';
 
 import { StateContext } from './context/StateProvider';
@@ -23,9 +23,9 @@ const App = () => {
    let userProjectsData = ''
    const data = window.localStorage.getItem('allProjectsData')
    if (data) {
-       userProjectsData = JSON.parse(data)
-   } 
-   
+      userProjectsData = JSON.parse(data)
+   }
+
 
    useEffect(() => {
       const currentThemeColor = localStorage.getItem('colorMode');
@@ -72,11 +72,11 @@ const App = () => {
          disconnectWallet()
          connectWallet()
       } else if (accounts[0] === userAccount) {
-        
+
          if (window.localStorage.getItem('currentProject') !== null && window.localStorage.getItem('currentProject') !== 'undefined') {
             connectWallet()
             console.log(userAccount)
-         } 
+         }
       }
    };
 
@@ -111,11 +111,11 @@ const App = () => {
                   </TooltipComponent>
                </div>
                {activeMenu ? (
-                  <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
+                  <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white">
                      <Sidebar />
                   </div>
                ) : (
-                  <div className="w-0 dark:bg-secondary-dark-bg">
+                     <div  className="w-0 dark:bg-secondary-dark-bg">
                      <Sidebar />
                   </div>
                )}
@@ -153,7 +153,6 @@ const App = () => {
                         <Route path="/" element={(<Home />)} />
                         <Route path="/Home" element={(<Home />)} />
                         <Route path="/Projects" element={(<CurrentProject />)} />
-                        <Route path='/General' element={(<General />)} />
 
                         {/* pages  */}
                         <Route path="/orders" element={<Orders />} />
