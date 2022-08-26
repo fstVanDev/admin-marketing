@@ -28,6 +28,8 @@ export const StateProvider = ({ children }) => {
    const [generalData, setGeneralData] = useState(null)
    const [dataSnapshot, setDataSnapshot] = useState(null)
    const [isCreate, setIsCreate] = useState(false)
+   const [isMonarch, setIsMonarch] = useState(false)
+   const [isShapshot, setIsSnapshot] = useState(false)
 
    return (
       <StateContext.Provider value={{
@@ -46,7 +48,9 @@ export const StateProvider = ({ children }) => {
          generalData, setGeneralData,
          dataSnapshot, setDataSnapshot,
          isCreate, setIsCreate,
-         chainId, setChainId
+         chainId, setChainId,
+         isMonarch, setIsMonarch,
+         isShapshot, setIsSnapshot
       }}>
          {children}
       </StateContext.Provider>

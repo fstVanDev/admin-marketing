@@ -5,7 +5,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { getCurrentProject, getDataSnapshot } from './context/RequestProvider'
 
 import { Navbar, Sidebar, ThemeSettings } from './components';
-import { CurrentProject, Orders, General, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Home } from './pages';
+import { CurrentProject, Orders, General, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Home, Moonarch, DataSnapshot } from './pages';
 import './App.css';
 
 import { StateContext } from './context/StateProvider';
@@ -133,7 +133,7 @@ const App = () => {
                      {themeSettings && (<ThemeSettings />)}
 
                      <Routes>
-                        {/* Project  */}
+                        {/* Current Project  */}
                         {userProjectsData ? (
                            <>
                               {(userProjectsData).map((item) => (
@@ -147,6 +147,7 @@ const App = () => {
                         ) : (
                            null
                         )}
+
 
                         {/* dashboard  */}
                         <Route path="/" element={(<Home />)} />

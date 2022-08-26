@@ -30,6 +30,7 @@ const UserProfile = () => {
       setIsOpen(!isOpen);
    }
 
+  
 
 
    const bindValueToClick = (value) => {

@@ -40,7 +40,8 @@ const Navbar = () => {
    } = useStateContext();
 
    const { connectWallet, disconnectWallet } = useContext(TranscactionContext)
-   const { userAccount, currentUserProject, generalData, setGeneralData } = useContext(StateContext)
+   const { userAccount, currentUserProject, generalData, setGeneralData, isMonarch, setIsMonarch,
+      isShapshot, setIsSnapshot } = useContext(StateContext)
 
    useEffect(() => {
       const handleResize = () => setScreenSize(window.innerWidth);
@@ -89,6 +90,14 @@ const Navbar = () => {
       return <div ref={wrapperRef}>{props.children}</div>;
    }
 
+   function toogleMon() {
+setIsMonarch(!isMonarch)
+   }
+
+   function toggleData() {
+      setIsSnapshot(!setIsSnapshot)
+   }
+
 
 
    return (
@@ -100,28 +109,16 @@ const Navbar = () => {
             icon={<AiOutlineMenu />}
          />
          <div className="flex">
-            {/* <NavButton
-               title="Chat"
-               dotColor="#03C9D7"
-               customFunc={() => handleClick("chat")}
-               color={currentColor}
-               icon={<BsChatLeft />}
-            />
-            <NavButton
-               title="Notification"
-               dotColor="rgb(254, 201, 15)"
-               customFunc={() => handleClick("notification")}
-               color={currentColor}
-               icon={<RiNotification3Line />}
-            /> */}
+            <div class=" border-1 border-gray-200 dark:border-gray-700 mr-4 my-auto rounded-lg text-white">
+               <ul class="flex flex-wrap -mb-px text-lg text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 
-            {/* <div className="flex items-center justify-center ">
-               <div className="w-16 h-16 border-b-4 border-yellow-900 rounded-full animate-spin"></div>
-            </div> */}
+                  <button class="mr-2 inline-block p-3 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onClick={toogleMon}>Moonarch</button>
 
-            {/* <button className="text-white w-[90px] h-[44px] border-white" onClick={() => justWatch(currentUserProject, setGeneralData)}>
-               Just Watch
-            </button> */}
+
+                  <button class="mr-2 inline-block p-3 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false" onClick={toggleData}>Data Snapshot</button>
+
+               </ul>
+            </div>
 
 
             <div className="my-auto mx-[12px]">
@@ -135,7 +132,7 @@ const Navbar = () => {
 
             <TooltipComponent content="Profile" position="BottomCenter">
                <div
-                  className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+                  className="flex items-center gap-2 cursor-pointer my-4 p-1 hover:bg-light-gray rounded-lg"
                   onClick={() => handleClick("userProfile")}
                >
                   <img
