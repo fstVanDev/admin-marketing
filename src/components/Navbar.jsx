@@ -40,29 +40,28 @@ const Navbar = () => {
    } = useStateContext();
 
    const { connectWallet, disconnectWallet } = useContext(TranscactionContext)
-   const { userAccount, currentUserProject, generalData, setGeneralData, isMonarch, setIsMonarch, isCurrent, setIsCurrent,
-      isShapshot, setIsSnapshot } = useContext(StateContext)
+   const { userAccount, currentUserProject, generalData, setGeneralData,  } = useContext(StateContext)
 
    const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-   function toogleMon() {
-      setIsMonarch(true)
-      setIsSnapshot(false)
-      setIsCurrent(false)
-   }
+   // function toogleMon() {
+   //    setIsMonarch(true)
+   //    setIsSnapshot(false)
+   //    setIsCurrent(false)
+   // }
 
 
-   function toggleData() {
-      setIsMonarch(false)
-      setIsSnapshot(true)
-      setIsCurrent(false)
-   }
+   // function toggleData() {
+   //    setIsMonarch(false)
+   //    setIsSnapshot(true)
+   //    setIsCurrent(false)
+   // }
 
-   function toggleCurrent() {
-      setIsMonarch(false)
-      setIsSnapshot(false)
-      setIsCurrent(true)
-   }
+   // function toggleCurrent() {
+   //    setIsMonarch(false)
+   //    setIsSnapshot(false)
+   //    setIsCurrent(true)
+   // }
 
    useEffect(() => {
       const handleResize = () => setScreenSize(window.innerWidth);
@@ -91,7 +90,7 @@ const Navbar = () => {
             color={currentColor}
             icon={<AiOutlineMenu />}
          />
-         <div className="flex">
+         {/* <div className="flex">
             {generalData ? (
                <div className=" border-1 border-gray-200 dark:border-gray-700 mr-4 my-auto rounded-lg text-white">
                   <ul className="flex flex-wrap -mb-px text-lg text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
@@ -105,7 +104,7 @@ const Navbar = () => {
 
                   </ul>
                </div>
-            ) : (null)}
+            ) : (null)} */}
 
 
 
@@ -140,7 +139,7 @@ const Navbar = () => {
             }
 
          </div>
-      </div >
+      // </div >
    );
 };
 

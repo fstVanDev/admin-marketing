@@ -18,23 +18,23 @@ const LineChart = () => {
    const [gameList, setGameList] = useState([]);
    const [loaded, setLoaded] = useState(false)
 
-   
+
    var a = []
    var b = []
    var c = []
 
    const dataView = () => {
       dataSnapshot[1].everyHour.map((item, index) => (
-      a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2)})
+         a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
       ))
 
       dataSnapshot[1].everyHour.map((item, index) => (
-      b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
+         b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
       ))
 
       dataSnapshot[1].everyHour.map((item, index) => (
-      c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
-      ))      
+         c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+      ))
    }
 
    useEffect(() => {
@@ -43,7 +43,8 @@ const LineChart = () => {
       setGameList(gameList => [...gameList, b]);
       setGameList(gameList => [...gameList, c]);
       setLoaded(true)
-       }, [dataSnapshot]);
+
+   }, [dataSnapshot,a,b,c]);
 
    var lineCustomSeries = [
       {
@@ -99,7 +100,7 @@ const LineChart = () => {
    };
 
 
-
+   console.log('hello')
 
    const Loader = () => {
       return (
@@ -112,7 +113,7 @@ const LineChart = () => {
 
    return (
       <>
-         { dataView() }
+         {dataView()}
          <ChartComponent
             id="line-chart"
             height="420px"
@@ -128,7 +129,7 @@ const LineChart = () => {
             <SeriesCollectionDirective>
                {
                   lineCustomSeries.map((item, index) => (
-                  
+
                      <SeriesDirective key={index} {...item} />
                   ))
                }
