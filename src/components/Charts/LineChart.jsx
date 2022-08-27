@@ -10,50 +10,44 @@ import {
    Tooltip,
 } from "@syncfusion/ej2-react-charts";
 import { StateContext } from '../../context/StateProvider'
-
-// import {
-//    lineCustomSeries,
-// } from "../../data/dummy";
 import { useStateContext } from "../../context/ContextProvider";
 
 const LineChart = () => {
    const { currentMode } = useStateContext();
    const { dataSnapshot } = useContext(StateContext)
-   const [rend, setRend] = useState([])
-
-   const lineChartData = [
-      [],
-      [],
-      [],
-   ]
-   console.log(rend, 'haha')
+   const [gameList, setGameList] = useState([]);
+   const [loaded, setLoaded] = useState(false)
 
    
+   var a = []
+   var b = []
+   var c = []
 
    const dataView = () => {
       dataSnapshot[1].everyHour.map((item, index) => (
-         setRend(rend.push({ x: `${String(item.timestamp)}`, y: item.project_info.users_without_wallet }))
-      ))
-      dataSnapshot[1].everyHour.map((item, index) => (
-         setRend(rend.push({ x: `${String(item.timestamp)}`, y: item.project_info.users_with_wallet }))
+      a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2)})
       ))
 
       dataSnapshot[1].everyHour.map((item, index) => (
-         setRend(rend.push({ x: `${String(item.timestamp)}`, y: item.project_info.users_connected_wallet }))
+      b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
       ))
-      console.log(dataSnapshot, 'linechart')
-      // setRend(true)
-      // return lineChartData
-      console.log(rend, 'rend before')
 
+      dataSnapshot[1].everyHour.map((item, index) => (
+      c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+      ))      
    }
 
-   dataView()
+   useEffect(() => {
 
+      setGameList(gameList => [...gameList, a]);
+      setGameList(gameList => [...gameList, b]);
+      setGameList(gameList => [...gameList, c]);
+      setLoaded(true)
+       }, [dataSnapshot]);
 
-   const lineCustomSeries = [
+   var lineCustomSeries = [
       {
-         dataSource: rend[0],
+         dataSource: gameList[0],
          xName: 'x',
          yName: 'y',
          name: 'Without wallet',
@@ -63,7 +57,7 @@ const LineChart = () => {
       },
 
       {
-         dataSource: rend[1],
+         dataSource: gameList[1],
          xName: 'x',
          yName: 'y',
          name: 'With wallet',
@@ -73,7 +67,7 @@ const LineChart = () => {
       },
 
       {
-         dataSource: rend[2],
+         dataSource: gameList[2],
          xName: 'x',
          yName: 'y',
          name: 'Connected wallet',
@@ -86,8 +80,8 @@ const LineChart = () => {
 
    const LinePrimaryXAxis = {
       valueType: 'DateTime',
-      labelFormat: 'y',
-      intervalType: 'Years',
+      labelFormat: 'h',
+      intervalType: 'Hours',
       edgeLabelPlacement: 'Shift',
       majorGridLines: { width: 0 },
       background: 'white',
@@ -97,8 +91,8 @@ const LineChart = () => {
       labelFormat: '{value}',
       rangePadding: 'None',
       minimum: 0,
-      maximum: 100,
-      interval: 5,
+      maximum: 10000,
+      interval: 1000,
       lineStyle: { width: 0 },
       majorTickLines: { width: 0 },
       minorTickLines: { width: 0 },
@@ -118,7 +112,7 @@ const LineChart = () => {
 
    return (
       <>
-         {/* { dataView() } */}
+         { dataView() }
          <ChartComponent
             id="line-chart"
             height="420px"
@@ -132,11 +126,10 @@ const LineChart = () => {
             <Inject services={[LineSeries, DateTime, Legend, Tooltip]} />
 
             <SeriesCollectionDirective>
-               {console.log(rend, 'rend')}
-
                {
-                  lineCustomSeries.map((item) => (
-                     <SeriesDirective key={item.id} {...item} />
+                  lineCustomSeries.map((item, index) => (
+                  
+                     <SeriesDirective key={index} {...item} />
                   ))
                }
 
@@ -147,4 +140,4 @@ const LineChart = () => {
    );
 };
 
-export default React.memo(LineChart);
+export default LineChart;
