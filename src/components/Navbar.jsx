@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
@@ -43,9 +43,29 @@ const Navbar = () => {
    const { userAccount, currentUserProject, generalData, setGeneralData, isMonarch, setIsMonarch, isCurrent, setIsCurrent,
       isShapshot, setIsSnapshot } = useContext(StateContext)
 
+   const handleActiveMenu = () => setActiveMenu(!activeMenu);
+
+   function toogleMon() {
+      setIsMonarch(true)
+      setIsSnapshot(false)
+      setIsCurrent(false)
+   }
+
+
+   function toggleData() {
+      setIsMonarch(false)
+      setIsSnapshot(true)
+      setIsCurrent(false)
+   }
+
+   function toggleCurrent() {
+      setIsMonarch(false)
+      setIsSnapshot(false)
+      setIsCurrent(true)
+   }
+
    useEffect(() => {
       const handleResize = () => setScreenSize(window.innerWidth);
-
       window.addEventListener("resize", handleResize);
 
       handleResize();
@@ -61,53 +81,6 @@ const Navbar = () => {
       }
    }, [screenSize]);
 
-   const handleActiveMenu = () => setActiveMenu(!activeMenu);
-
-
-   function useOutsideAlerter(ref) {
-      useEffect(() => {
-         /**
-          * Alert if clicked on outside of element
-          */
-         function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
-               setIsClicked(initialState)
-            }
-         }
-         // Bind the event listener
-         document.addEventListener("mousedown", handleClickOutside);
-         return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-         };
-      }, [ref]);
-   }
-
-   function OutsideAlerter(props) {
-      const wrapperRef = useRef(null);
-      useOutsideAlerter(wrapperRef);
-
-      return <div ref={wrapperRef}>{props.children}</div>;
-   }
-
-   function toogleMon() {
-      setIsMonarch(true)
-      setIsSnapshot(false)
-      setIsCurrent(false)
-   }
-   
-
-   function toggleData() {
-      setIsMonarch(false)
-      setIsSnapshot(true)
-      setIsCurrent(false)   }
-
-   function toggleCurrent() {
-      setIsMonarch(false)
-      setIsSnapshot(false)
-      setIsCurrent(true)
-   }
-
 
 
    return (
@@ -120,15 +93,15 @@ const Navbar = () => {
          />
          <div className="flex">
             {generalData ? (
-               <div class=" border-1 border-gray-200 dark:border-gray-700 mr-4 my-auto rounded-lg text-white">
-                  <ul class="flex flex-wrap -mb-px text-lg text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+               <div className=" border-1 border-gray-200 dark:border-gray-700 mr-4 my-auto rounded-lg text-white">
+                  <ul className="flex flex-wrap -mb-px text-lg text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
 
-                     <button class="mr-2 inline-block p-3 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onClick={toggleCurrent}>Current</button>
+                     <button className="mr-2 inline-block p-3 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onClick={toggleCurrent}>Current</button>
 
-                     <button class="mr-2 inline-block p-3 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onClick={toogleMon}>Moonarch</button>
+                     <button className="mr-2 inline-block p-3 border-b-2 rounded-t-lg border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false" onClick={toogleMon}>Moonarch</button>
 
 
-                     <button class="mr-2 inline-block p-3 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false" onClick={toggleData}>Snapshot</button>
+                     <button className="mr-2 inline-block p-3 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false" onClick={toggleData}>Snapshot</button>
 
                   </ul>
                </div>
@@ -163,9 +136,7 @@ const Navbar = () => {
             {isClicked.chat && <Chat />}
             {isClicked.notification && <Notification />}
             {isClicked.userProfile &&
-               // <OutsideAlerter>
                <UserProfile />
-               // </OutsideAlerter>
             }
 
          </div>

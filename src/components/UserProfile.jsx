@@ -44,40 +44,47 @@ const UserProfile = () => {
       getDataSnapshot(value, setDataSnapshot)
    }
 
+   function useOutsideAlerter(ref) {
+      useEffect(() => {
+         /**
+          * Alert if clicked on outside of element
+          */
+         function handleClickOutside(event) {
+            if (ref.current && !ref.current.contains(event.target)) {
+               setIsClicked(initialState)
+            }
+         }
+         // Bind the event listener
+         document.addEventListener("mousedown", handleClickOutside);
+         return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+         };
+      }, [ref]);
+   }
+
+   function OutsideAlerter(props) {
+      const wrapperRef = useRef(null);
+      useOutsideAlerter(wrapperRef);
+
+      return <div ref={wrapperRef}>{props.children}</div>;
+   }
+
 
    useEffect(() => {
-
       const checkIfClickedOutside = e => {
-
-         // If the menu is open and the clicked target is not within the menu,
-
-         // then close the menu
-
          if (isMenuOpen && ref.current && !ref.current.contains(e.target)) {
-
             setIsMenuOpen(false)
-
          }
-
       }
-
-
       document.addEventListener("mousedown", checkIfClickedOutside)
-
-
       return () => {
-
-         // Cleanup the event listener
-
          document.removeEventListener("mousedown", checkIfClickedOutside)
-
       }
-
    }, [isMenuOpen])
-//onClick={() => setIsClicked(initialState)}
 
    return (
-      <div >
+      <OutsideAlerter >
          <div className={"nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-[440px]"} >
             { isOpen ? (
                <>
@@ -120,9 +127,6 @@ const UserProfile = () => {
                         </div>
                      </div>
                   </div>
-
-
-
                   {userAccount ? (
                      <>
                         {isUserRegistered ? (
@@ -174,18 +178,10 @@ const UserProfile = () => {
                   ) : (
                      <p className="text-base dark:text-gray-200">To see your projects please connect wallet</p>
                   )}
-
-
-
-
                </>
-
-
             )}
-
-
          </div >
-      </div>
+      </OutsideAlerter>
    );
 }
 

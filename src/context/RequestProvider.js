@@ -220,17 +220,16 @@ export const getDataSnapshot = async (value, setDataSnapshot) => {
 
    const datas = window.localStorage.getItem('allProjectsData')
    const userProjectsData = JSON.parse(datas)
-   console.log(userProjectsData[value].project_id)
-
+   
    var data = qs.stringify({
-      'from_date': '2022-08-12',
-      'project_id': userProjectsData[value].project_id
+      'project_id': userProjectsData[value].project_id,
+      'from_date': '2022-8-26'
    });
-   console.log(data)
+   console.log(userProjectsData[value].project_id)
    var config = {
       method: 'post',
+      mode: 'no-cors',
       url: `${process.env.REACT_APP_BACK_URL}/data_snapshot`,
-
       headers: {
          'Content-Type': 'application/x-www-form-urlencoded'
       },
@@ -239,12 +238,13 @@ export const getDataSnapshot = async (value, setDataSnapshot) => {
 
    axios(config)
       .then(function (response) {
-         console.log(response.data, 'from snapshot');
-         setDataSnapshot(response.data)
+         console.log(response.data, 'from datasnapshot')
+         setDataSnapshot(response.data);
       })
       .catch(function (error) {
          console.log(error);
       });
+   
 }
 
 
@@ -310,16 +310,15 @@ export const getCurrentProjectbyProjectId = async (project_id, setGeneralData) =
 
 export const getDataSnapshotbyProjectId = async (project_id, setDataSnapshot) => {
 
-
    var data = qs.stringify({
-      'from_date': '2022-08-12',
-      'project_id': project_id
+      'project_id': project_id,
+      'from_date': '2022-8-26'
    });
-   console.log(data)
+   console.log(project_id, 'from getDataId')
    var config = {
       method: 'post',
+      mode: 'no-cors',
       url: `${process.env.REACT_APP_BACK_URL}/data_snapshot`,
-
       headers: {
          'Content-Type': 'application/x-www-form-urlencoded'
       },
@@ -328,7 +327,7 @@ export const getDataSnapshotbyProjectId = async (project_id, setDataSnapshot) =>
 
    axios(config)
       .then(function (response) {
-         console.log(response.data, 'from snapshot');
+         console.log(response.data, 'from snapshot')
          setDataSnapshot(response.data)
       })
       .catch(function (error) {
