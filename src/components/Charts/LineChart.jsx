@@ -11,40 +11,15 @@ import {
 } from "@syncfusion/ej2-react-charts";
 import { StateContext } from '../../context/StateProvider'
 import { useStateContext } from "../../context/ContextProvider";
+import { getDataSnapshotbyProjectId } from "../../context/RequestProvider";
 
 const LineChart = () => {
    const { currentMode } = useStateContext();
-   const { dataSnapshot } = useContext(StateContext)
+   const { dataSnapshot, setDataSnapshot } = useContext(StateContext)
    const [gameList, setGameList] = useState([]);
-   const [loaded, setLoaded] = useState(false)
 
 
-   var a = []
-   var b = []
-   var c = []
 
-   const dataView = () => {
-      dataSnapshot[1].everyHour.map((item, index) => (
-         a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
-      ))
-
-      dataSnapshot[1].everyHour.map((item, index) => (
-         b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
-      ))
-
-      dataSnapshot[1].everyHour.map((item, index) => (
-         c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
-      ))
-   }
-
-   useEffect(() => {
-
-      setGameList(gameList => [...gameList, a]);
-      setGameList(gameList => [...gameList, b]);
-      setGameList(gameList => [...gameList, c]);
-      setLoaded(true)
-
-   }, [dataSnapshot,a,b,c]);
 
    var lineCustomSeries = [
       {
@@ -99,9 +74,6 @@ const LineChart = () => {
       minorTickLines: { width: 0 },
    };
 
-
-   console.log('hello')
-
    const Loader = () => {
       return (
          <div className="flex items-center justify-center ">
@@ -111,9 +83,41 @@ const LineChart = () => {
    }
 
 
+   useEffect(() => {
+      const fetchData = async () => {
+
+         try {
+          
+            let a = []
+            let b = []
+            let c = []
+
+            dataSnapshot[1].everyHour.map((item, index) => (
+               a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
+            ))
+            dataSnapshot[1].everyHour.map((item, index) => (
+               b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
+            ))
+            dataSnapshot[1].everyHour.map((item, index) => (
+               c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+            ))
+            console.log('2')
+            console.log(dataSnapshot)
+            await setGameList(gameList => [...gameList, a]);
+            await setGameList(gameList => [...gameList, b]);
+            await setGameList(gameList => [...gameList, c]);
+            console.log(gameList)
+         } catch (e) {
+            console.log(e.message)
+         }
+      }
+      fetchData()
+   }, [setGameList])
+
+
    return (
       <>
-         {dataView()}
+         {/* {dataView()} */}
          <ChartComponent
             id="line-chart"
             height="420px"
