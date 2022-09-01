@@ -216,14 +216,18 @@ export const justWatch = async (value, setGeneralData) => {
 
 
 // get data_snapshot
-export const getDataSnapshot = async (value, setDataSnapshot) => {
+export const getDataSnapshot = async (value, setDataSnapshot, toDate, fromDate) => {
 
    const datas = window.localStorage.getItem('allProjectsData')
    const userProjectsData = JSON.parse(datas)
+
+ 
+
    
    var data = qs.stringify({
       'project_id': userProjectsData[value].project_id,
-      'from_date': '2022-8-26'
+      'from_date': fromDate,
+      'to_date': toDate
    });
    console.log(userProjectsData[value].project_id)
    var config = {
@@ -273,7 +277,6 @@ export const getCurrentProjectbyProjectId = async (project_id, setGeneralData) =
          // console.log(currentUserProject, '???')
 
          const userProjectsData1 = JSON.parse(datas1)
-         console.log(datas1)
 
 
          let data2 = qs.stringify({
@@ -314,7 +317,6 @@ export const getDataSnapshotbyProjectId = async (project_id, setDataSnapshot) =>
       'project_id': project_id,
       'from_date': '2022-8-26'
    });
-   console.log(project_id, 'from getDataId')
    var config = {
       method: 'post',
       mode: 'no-cors',

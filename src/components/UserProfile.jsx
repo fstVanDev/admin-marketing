@@ -29,19 +29,32 @@ const UserProfile = () => {
       setIsOpen(!isOpen);
    }
 
-  
+   function getCurrentDate(newDate) {
+      var days = newDate.getDate();
+      var month = newDate.getMonth();
+      var year = newDate.getFullYear();
+      const a = year + '-' + (month + 1) + '-' + days
+      return a
+   }
+
+
 
 
    const bindValueToClick = (value) => {
       return function () { onClicks(value) };
    }
 
-   const onClicks = (value) => {
+   const onClicks = async (value) => {
       setCurrentUserProject(value)
 
-      getCurrentProject(value, setGeneralData, currentUserProject, setDataSnapshot)
-      // justWatch(currentUserProject, setGeneralData)
-      getDataSnapshot(value, setDataSnapshot)
+      await getCurrentProject(value, setGeneralData, currentUserProject, setDataSnapshot)
+
+
+      const datar = window.localStorage.getItem('currentProject')
+      const userDatar = JSON.parse(datar)
+
+      const fromDate = getCurrentDate(new Date(Number(userDatar.created._seconds) * 1000))
+      await getDataSnapshot(value, setDataSnapshot, getCurrentDate(new Date()), fromDate)
    }
 
    function useOutsideAlerter(ref) {
@@ -86,7 +99,7 @@ const UserProfile = () => {
    return (
       <OutsideAlerter >
          <div className={"nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-[440px]"} >
-            { isOpen ? (
+            {isOpen ? (
                <>
                   {userAccount && isUserRegistered ? (
                      // create new user project

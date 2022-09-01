@@ -18,6 +18,7 @@ import { BsBoxSeam } from 'react-icons/bs';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { useStateContext } from "../context/ContextProvider";
 import { TabComponent, TabItemDirective, TabItemsDirective } from "@syncfusion/ej2-react-navigations";
+import DatePicker from "../components/DatePicker";
 
 const CurrentProject = () => {
    const { currentColor, currentMode } = useStateContext();
@@ -205,7 +206,7 @@ const CurrentProject = () => {
 
    function content1() {
       return (<div>
-            <div>
+         <div className="bg-main-dark-bg p-10">
             <div className="flex flex-wrap lg:flex-nowrap justify-center ">
                <div className="flex m-3 flex-wrap justify-between gap-1 items-center">
                   {earningData.map((item) => (
@@ -232,7 +233,7 @@ const CurrentProject = () => {
                </div>
             </div>
 
-            <div className="flex gap-10 m-4 flex-wrap justify-center">
+            <div className="flex gap-10 m-4 flex-wrap justify-center bg-main-dark">
                <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
                   <div className="flex justify-between items-center gap-2">
                      <p className="text-xl font-semibold">Recent Transactions</p>
@@ -301,14 +302,16 @@ const CurrentProject = () => {
 
    function content2() {
       return (<div>
-         <div>
+         <div className="bg-main-dark-bg p-10">
             <div className="bg-white dark:text-gray-200  flex flex-wrap justify-center mx-auto my-4 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
-               <div className="flex justify-between items-center gap-2 mb-10">
+               <div className="flex w-full justify-between items-center gap-2 mb-10">
                   <p className="text-xl font-semibold">Sales Overview</p>
+                  <DatePicker />
                </div>
                <div className="md:w-full overflow-auto">
                   <LineChart />
                </div>
+
             </div>
             <div className="flex gap-10 flex-wrap justify-center">
                <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
@@ -364,8 +367,8 @@ const CurrentProject = () => {
 
    function content3() {
       return (<div>
-         <div>
-            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-6 rounded-2xl w-[880px] mx-auto justify-between">
+         <div className="bg-main-dark-bg p-10">
+            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  mb-0 p-6 rounded-2xl w-[880px] mx-auto justify-between">
                <div className="flex ">
                   <p className="font-semibold text-xl">General Data</p>
                </div>

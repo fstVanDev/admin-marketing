@@ -27,10 +27,12 @@ export const StateProvider = ({ children }) => {
    const [currentUserProject, setCurrentUserProject] = useState(null)
    const [generalData, setGeneralData] = useState(null)
    const [dataSnapshot, setDataSnapshot] = useState(null)
+   const [currentSnapshot, setCurrentSnapshot] = useState(null)
    const [isCreate, setIsCreate] = useState(false)
    const [isMonarch, setIsMonarch] = useState(false)
    const [isShapshot, setIsSnapshot] = useState(false)
    const [isCurrent, setIsCurrent] = useState(true)
+   const [date, setDate] = useState('')
 
    return (
       <StateContext.Provider value={{
@@ -52,7 +54,9 @@ export const StateProvider = ({ children }) => {
          chainId, setChainId,
          isMonarch, setIsMonarch,
          isShapshot, setIsSnapshot,
-         isCurrent, setIsCurrent
+         isCurrent, setIsCurrent,
+         date, setDate,
+         currentSnapshot, setCurrentSnapshot
       }}>
          {children}
       </StateContext.Provider>

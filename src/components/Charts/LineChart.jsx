@@ -11,11 +11,10 @@ import {
 } from "@syncfusion/ej2-react-charts";
 import { StateContext } from '../../context/StateProvider'
 import { useStateContext } from "../../context/ContextProvider";
-import { getDataSnapshotbyProjectId } from "../../context/RequestProvider";
 
 const LineChart = () => {
    const { currentMode } = useStateContext();
-   const { dataSnapshot, setDataSnapshot } = useContext(StateContext)
+   const { dataSnapshot, setDataSnapshot, currentSnapshot, setCurrentSnapshot, date } = useContext(StateContext)
    const [gameList, setGameList] = useState([]);
 
 
@@ -87,31 +86,56 @@ const LineChart = () => {
       const fetchData = async () => {
 
          try {
-          
+
             let a = []
             let b = []
             let c = []
 
-            dataSnapshot[1].everyHour.map((item, index) => (
-               a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
-            ))
-            dataSnapshot[1].everyHour.map((item, index) => (
-               b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
-            ))
-            dataSnapshot[1].everyHour.map((item, index) => (
-               c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
-            ))
-            console.log('2')
-            console.log(dataSnapshot)
-            await setGameList(gameList => [...gameList, a]);
-            await setGameList(gameList => [...gameList, b]);
-            await setGameList(gameList => [...gameList, c]);
-            console.log(gameList)
+            if (date !== 'NaN-NaN-NaN' || '') {
+
+               console.log(date)
+
+               for (let i = 0; i < dataSnapshot.length; i++) {
+
+                  if (date === dataSnapshot[i].date) {
+
+                     dataSnapshot[i].everyHour.map((item, index) => (
+                        a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
+                     ))
+                     dataSnapshot[i].everyHour.map((item, index) => (
+                        b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
+                     ))
+                     dataSnapshot[i].everyHour.map((item, index) => (
+                        c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+                     ))
+                     await setGameList(gameList => [...gameList, a]);
+                     await setGameList(gameList => [...gameList, b]);
+                     await setGameList(gameList => [...gameList, c]);
+                  }
+               }
+            } else {
+
+               dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
+                  a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
+               ))
+               dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
+                  b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
+               ))
+               dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
+                  c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+               ))
+               await setGameList(gameList => [...gameList, a]);
+               await setGameList(gameList => [...gameList, b]);
+               await setGameList(gameList => [...gameList, c]);
+
+            }
+
          } catch (e) {
             console.log(e.message)
          }
       }
       fetchData()
+
    }, [setGameList])
 
 
