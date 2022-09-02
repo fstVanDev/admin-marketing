@@ -1,17 +1,9 @@
-import React, { useContext, useState, useEffect, useReducer } from "react";
-import { GoPrimitiveDot } from "react-icons/go";
+import React, { useContext, useState, Fragment, useEffect } from "react";
 import { IoIosMore } from "react-icons/io";
-import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { StateContext } from "../context/StateProvider";
-import { Stacked, Pie, Button, LineChart, SparkLine } from "../components";
-import {
-   medicalproBranding,
-   recentTransactions,
-   weeklyStats,
-   dropdownData,
-   SparklineAreaData,
-   ecomPieChartData,
-} from "../data/dummy";
+import { Stacked, Button, LineChart, SparkLine } from "../components";
+import { SparklineAreaData } from "../data/dummy";
+import { Menu, Transition } from '@headlessui/react'
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { FiBarChart } from 'react-icons/fi';
 import { BsBoxSeam } from 'react-icons/bs';
@@ -19,12 +11,23 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 import { useStateContext } from "../context/ContextProvider";
 import { TabComponent, TabItemDirective, TabItemsDirective } from "@syncfusion/ej2-react-navigations";
 import DatePicker from "../components/DatePicker";
+import { getDataSnapshot } from '../context/RequestProvider'
+
+
 
 const CurrentProject = () => {
    const { currentColor, currentMode } = useStateContext();
+   const { generalData, dataSnapshot, currentSnapshot, setCurrentSnapshot, currentUserProject, setDataSnapshot } = useContext(StateContext)
 
    const [dropDown, setDropdown] = useState('hidden')
+   const [copyText, setCopyText] = React.useState("");
 
+
+   const data = window.localStorage.getItem(`currentProject`)
+   const userProjectsData = JSON.parse(data)
+
+
+   //
    const getFlex = () => {
       if (dropDown === 'hidden') {
          setDropdown('column')
@@ -32,11 +35,10 @@ const CurrentProject = () => {
          setDropdown('hidden')
       }
    }
-   const { generalData, dataSnapshot, isMonarch, isCurrent, setIsMonarch, setIsCurrent,
-      isShapshot, setIsSnapshot } = useContext(StateContext)
 
-   const data = window.localStorage.getItem(`currentProject`)
-   const userProjectsData = JSON.parse(data)
+   function classNames(...classes) {
+      return classes.filter(Boolean).join(' ')
+   }
 
    const shortenAddress = (address) => `${address.slice(0, 6)}...${address.slice(address.length - 4)}`;
 
@@ -48,11 +50,12 @@ const CurrentProject = () => {
       )
    }
 
+   //
+
    const earningData = [
       {
          icon: <MdOutlineSupervisorAccount />,
          amount: `${userProjectsData ? userProjectsData.users_connected_wallet + userProjectsData.users_with_wallet + userProjectsData.users_without_wallet : <Loader />}`,
-         // percentage: dataSnapshot[0].,
          title: 'All users',
          iconColor: '#03C9D7',
          iconBg: '#E5FAFB',
@@ -61,8 +64,6 @@ const CurrentProject = () => {
       {
          icon: <BsBoxSeam />,
          amount: `${userProjectsData ? userProjectsData.users_without_wallet : <Loader />}`,
-         // percentage: ((dataSnapshot[dataSnapshot.length - 2].users_without_wallet * 100) / dataSnapshot[dataSnapshot.length - 1].users_without_wallet).toFixed(1) + ' %',
-
          title: 'Without wallet',
          iconColor: 'rgb(255, 244, 229)',
          iconBg: 'rgb(254, 201, 15)',
@@ -159,7 +160,6 @@ const CurrentProject = () => {
       },
    ];
 
-   const [copyText, setCopyText] = React.useState("");
 
    const CopyToClipElement = ({ text }) => {
       const myRef = React.useRef(null);
@@ -177,26 +177,15 @@ const CurrentProject = () => {
       return <div>{data && <textarea ref={myRef}>{data}</textarea>} </div>;
    };
 
+   const handleForm = async (event) => {
+      // event.preventDefault()
 
-   function toogleMon() {
-      setIsMonarch(true)
-      setIsSnapshot(false)
-      setIsCurrent(false)
+
+      if (event === 'Last 3 days') {
+         await getDataSnapshot(event, setCurrentSnapshot, dataSnapshot[dataSnapshot.length - 1].date, dataSnapshot[dataSnapshot.length - 3].date,)
+      }
+      console.log(currentSnapshot, 'currentSnapshot')
    }
-
-
-   function toggleData() {
-      setIsMonarch(false)
-      setIsSnapshot(true)
-      setIsCurrent(false)
-   }
-
-   function toggleCurrent() {
-      setIsMonarch(false)
-      setIsSnapshot(false)
-      setIsCurrent(true)
-   }
-
 
    let headertext = [
       { text: "General" },
@@ -204,366 +193,494 @@ const CurrentProject = () => {
       { text: "Monarch" },
    ];
 
+   useEffect(() => {
+      function consoleSnap() {
+         console.log(currentSnapshot)
+      }
+      consoleSnap()
+   }, [currentSnapshot])
+
    function content1() {
-      return (<div>
-         <div className="bg-main-dark-bg p-10">
-            <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-               <div className="flex m-3 flex-wrap justify-between gap-1 items-center">
-                  {earningData.map((item) => (
-                     <div
-                        key={item.title}
-                        className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-2xl "
-                     >
-                        <button
-                           type="button"
-                           style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-                           className="text-2xl opacity-0.9 rounded-full  p-4 hover:drop-shadow-xl"
-                        >
-                           {item.icon}
-                        </button>
-                        <div className="mt-3">
-                           <span className="text-lg font-semibold">{item.amount}</span>
-                           <span className={`text-sm text-${item.pcColor} ml-2`}>
-                              {item.percentage}
-                           </span>
-                        </div>
-                        <p className="text-sm text-gray-400  mt-1">{item.title}</p>
-                     </div>
-                  ))}
-               </div>
-            </div>
-
-            <div className="flex gap-10 m-4 flex-wrap justify-center bg-main-dark">
-               <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
-                  <div className="flex justify-between items-center gap-2">
-                     <p className="text-xl font-semibold">Recent Transactions</p>
-                  </div>
-                  <div className="mt-10 w-72 md:w-400">
-                     {recentTransactions.map((item) => (
-                        <div key={item.title} className="flex justify-between mt-4">
-                           <div className="flex gap-4">
-                              <div>
-                                 <p className="text-md font-semibold">{item.title}</p>
-                                 <p className="text-sm text-gray-400">{item.desc}</p>
-                              </div>
-                           </div>
-                           <p className={`text-${item.pcColor}`}>{item.amount}</p>
-                        </div>
-                     ))}
-                  </div>
-               </div>
-            </div>
-
-            <div className="flex flex-wrap justify-center">
-               <div className="md:w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-                  <div className="flex justify-between">
-                     <p className="text-xl font-semibold">Weekly Stats</p>
-                     <button
-                        type="button"
-                        className="text-xl font-semibold text-gray-500"
-                     >
-                        <IoIosMore />
-                     </button>
-                  </div>
-
-                  <div className="mt-10 ">
-                     {weeklyStats.map((item) => (
+      return (
+         <>
+            <div className="bg-main-dark-bg p-10">
+               <div className="flex flex-wrap lg:flex-nowrap justify-center ">
+                  <div className="flex m-3 flex-wrap justify-between gap-1 items-center">
+                     {earningData.map((item) => (
                         <div
                            key={item.title}
-                           className="flex justify-between mt-4 w-full"
+                           className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-2xl "
                         >
-                           <div className="flex gap-4">
-                              <div>
-                                 <p className="text-md font-semibold">{item.title}</p>
-                                 <p className="text-sm text-gray-400">{item.desc}</p>
-                              </div>
+                           <button
+                              type="button"
+                              style={{ color: item.iconColor, backgroundColor: item.iconBg }}
+                              className="text-2xl opacity-0.9 rounded-full  p-4 hover:drop-shadow-xl"
+                           >
+                              {item.icon}
+                           </button>
+                           <div className="mt-3">
+                              <span className="text-lg font-semibold">{item.amount}</span>
+                              <span className={`text-sm text-${item.pcColor} ml-2`}>
+                                 {item.percentage}
+                              </span>
                            </div>
-
-                           <p className={`text-${item.pcColor}`}>{item.amount}</p>
+                           <p className="text-sm text-gray-400  mt-1">{item.title}</p>
                         </div>
                      ))}
-                     <div className="mt-4">
-                        <SparkLine
-                           currentColor={currentColor}
-                           id="area-sparkLine"
-                           height="160px"
-                           type="Area"
-                           data={SparklineAreaData}
-                           width="320"
-                           color="rgb(242, 252, 253)"
-                        />
+                  </div>
+               </div>
+
+               <div className="flex gap-10 m-4 flex-wrap justify-center bg-main-dark">
+                  <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
+                     <div className="flex justify-between items-center gap-2">
+                        <p className="text-xl font-semibold">Recent Transactions</p>
+                     </div>
+                     <div className="mt-10 w-72 md:w-400">
+                        {recentTransactions.map((item) => (
+                           <div key={item.title} className="flex justify-between mt-4">
+                              <div className="flex gap-4">
+                                 <div>
+                                    <p className="text-md font-semibold">{item.title}</p>
+                                    <p className="text-sm text-gray-400">{item.desc}</p>
+                                 </div>
+                              </div>
+                              <p className={`text-${item.pcColor}`}>{item.amount}</p>
+                           </div>
+                        ))}
+                     </div>
+                  </div>
+               </div>
+
+               <div className="flex flex-wrap justify-center">
+                  <div className="md:w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
+                     <div className="flex justify-between">
+                        <p className="text-xl font-semibold">Weekly Stats</p>
+                        <button
+                           type="button"
+                           className="text-xl font-semibold text-gray-500"
+                        >
+                           <IoIosMore />
+                        </button>
+                     </div>
+
+                     <div className="mt-10 ">
+                        {weeklyStats.map((item) => (
+                           <div
+                              key={item.title}
+                              className="flex justify-between mt-4 w-full"
+                           >
+                              <div className="flex gap-4">
+                                 <div>
+                                    <p className="text-md font-semibold">{item.title}</p>
+                                    <p className="text-sm text-gray-400">{item.desc}</p>
+                                 </div>
+                              </div>
+
+                              <p className={`text-${item.pcColor}`}>{item.amount}</p>
+                           </div>
+                        ))}
+                        <div className="mt-4">
+                           <SparkLine
+                              currentColor={currentColor}
+                              id="area-sparkLine"
+                              height="160px"
+                              type="Area"
+                              data={SparklineAreaData}
+                              width="320"
+                              color="rgb(242, 252, 253)"
+                           />
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-         </div>
-      </div>);
+         </>
+      );
    }
 
    function content2() {
-      return (<div>
-         <div className="bg-main-dark-bg p-10">
-            <div className="bg-white dark:text-gray-200  flex flex-wrap justify-center mx-auto my-4 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
-               <div className="flex w-full justify-between items-center gap-2 mb-10">
-                  <p className="text-xl font-semibold">Sales Overview</p>
-                  <DatePicker />
-               </div>
-               <div className="md:w-full overflow-auto">
-                  <LineChart />
-               </div>
+      return (
+         <>
+            <div className="bg-main-dark-bg p-10">
+               <div className="dark:text-gray-200  flex flex-wrap justify-center mx-auto my-4 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
+                  <div className="flex w-full justify-between items-center gap-2 mb-10 w-max-content">
+                     <p className="text-xl font-semibold">Sales Overview</p>
 
-            </div>
-            <div className="flex gap-10 flex-wrap justify-center">
-               <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
-                  <div className="flex justify-between">
-                     <p className="font-semibold text-xl">Revenue Updates</p>
+                     {/* <form onSubmit={handleForm}> */}
+                     {/* DropDown chain */}
+                     <Menu as="div" className=" text-gray-200 h-min-content bg-main-dark-bg w-[120px] rounded-lg ">
+
+                        <Menu.Button className="inline-flex rounded-lg justify-center w-full px-4 py-2 bg-main-dark-bg text-sm font-medium text-gray-200">
+                           Choose date
+                        </Menu.Button>
+
+
+                        <Transition
+                           as={Fragment}
+                           enter="transition ease-out duration-100"
+                           enterFrom="transform opacity-0 scale-95"
+                           enterTo="transform opacity-100 scale-100"
+                           leave="transition ease-in duration-75"
+                           leaveFrom="transform opacity-100 scale-100"
+                           leaveTo="transform opacity-0 scale-95"
+                        >
+                           <Menu.Items className="origin-top-right absolute z-[1000] w-[140px] rounded-lg p-auto shadow-lg bg-main-dark-bg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <div className="py-1 rounded-lg">
+
+                                 {dataSnapshot.length >= 1 ? (
+                                    <Menu.Item className=' text-gray-200 text-sm px-3 py-3'>
+                                       {({ active }) => (
+                                          <option
+                                             value={[dataSnapshot[0].date, dataSnapshot[0].date]}
+                                             className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                             )}
+                                             onClick={(e) => console.log((e.target.value))}
+
+                                          >
+                                             Yesterday
+                                          </option>
+                                       )}
+                                    </Menu.Item>
+                                 ) : (
+                                    <Menu.Item className=' text-gray-500 text-sm px-3 py-3 mb-6'>
+                                       <option> Yesterday </option>
+                                    </Menu.Item>
+                                 )}
+
+                                 {dataSnapshot.length >= 2 ? (
+                                    <Menu.Item className=' text-gray-200 text-sm px-3 py-3'>
+                                       {({ active }) => (
+                                          <option
+                                             value={Array[dataSnapshot[dataSnapshot.length - 3].date, dataSnapshot[dataSnapshot.length - 1].date]}
+                                             className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                             )}
+                                             onClick={(e) => handleForm((e.target.value))}
+                                          >
+                                             Last 3 days
+                                          </option>
+                                       )}
+                                    </Menu.Item>
+                                 ) : (
+                                    <Menu.Item className=' text-gray-500 text-sm px-3 py-3 mb-6'>
+                                       <option> Last 3 days </option>
+                                    </Menu.Item>
+                                 )}
+
+                                 {dataSnapshot.length >= 7 ? (
+                                    <Menu.Item className=' text-gray-200 text-sm px-3 py-3'>
+                                       {({ active }) => (
+                                          <option
+                                             value={[dataSnapshot[0].date, dataSnapshot[6].date]}
+                                             className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                             )}
+                                             onClick={(e) => console.log(e.target.value)}
+
+                                          >
+                                             Last 7 days
+                                          </option>
+                                       )}
+                                    </Menu.Item>
+                                 ) : (
+                                    <Menu.Item className=' text-gray-500 text-sm px-3 py-3 mb-6'>
+                                       <option> Last 7 days </option>
+                                    </Menu.Item>
+                                 )}
+
+
+                                 {dataSnapshot.length >= 30 ? (
+                                    <Menu.Item className=' text-gray-200 text-sm px-3 py-3 mb-6'>
+                                       {({ active }) => (
+                                          <option
+                                             value={[dataSnapshot[0].date, dataSnapshot[29].date]}
+                                             className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                             )}
+                                             onClick={(e) => console.log(e.target.value)}
+
+                                          >
+                                             Last 30 days
+                                          </option>
+                                       )}
+                                    </Menu.Item>
+                                 ) : (
+                                    <Menu.Item className=' text-gray-500 text-sm px-3 py-3 mb-6'>
+                                       <option> Last 30 days </option>
+                                    </Menu.Item>
+                                 )}
+
+
+                                 <div className='w-[max-content] m-auto'>
+                                    <DatePicker />
+                                 </div>
+                              </div>
+                           </Menu.Items>
+                        </Transition>
+                     </Menu>
+                     {/* </form> */}
+
                   </div>
-                  <div className="mt-10 flex gap-10 flex-wrap justify-center">
-                     <div className=" border-r-1 border-color m-4 pr-10">
-                        <div>
+                  <div className="md:w-full overflow-auto">
+                     <LineChart />
+                  </div>
+
+               </div>
+               <div className="flex gap-10 flex-wrap justify-center">
+                  <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
+                     <div className="flex justify-between">
+                        <p className="font-semibold text-xl">Revenue Updates</p>
+                     </div>
+                     <div className="mt-10 flex gap-10 flex-wrap justify-center">
+                        <div className=" border-r-1 border-color m-4 pr-10">
                            <div>
-                              <span className="text-3xl font-semibold">$93,438</span>
-                              <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
-                                 23%
-                              </span>
+                              <div>
+                                 <span className="text-3xl font-semibold">$93,438</span>
+                                 <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
+                                    23%
+                                 </span>
+                              </div>
+                              <p className="text-gray-500 mt-1">Budget</p>
                            </div>
-                           <p className="text-gray-500 mt-1">Budget</p>
-                        </div>
-                        <div className="mt-8">
-                           <p className="text-3xl font-semibold">$48,487</p>
+                           <div className="mt-8">
+                              <p className="text-3xl font-semibold">$48,487</p>
 
-                           <p className="text-gray-500 mt-1">Expense</p>
-                        </div>
+                              <p className="text-gray-500 mt-1">Expense</p>
+                           </div>
 
-                        <div className="mt-5">
-                           <SparkLine
-                              currentColor={currentColor}
-                              id="line-sparkLine"
-                              type="Line"
-                              height="80px"
-                              width="250px"
-                              data={SparklineAreaData}
-                              color={currentColor}
-                           />
+                           <div className="mt-5">
+                              <SparkLine
+                                 currentColor={currentColor}
+                                 id="line-sparkLine"
+                                 type="Line"
+                                 height="80px"
+                                 width="250px"
+                                 data={SparklineAreaData}
+                                 color={currentColor}
+                              />
+                           </div>
+                           <div className="mt-10">
+                              <Button
+                                 color="white"
+                                 bgColor={currentColor}
+                                 text="Download Report"
+                                 borderRadius="10px"
+                              />
+                           </div>
                         </div>
-                        <div className="mt-10">
-                           <Button
-                              color="white"
-                              bgColor={currentColor}
-                              text="Download Report"
-                              borderRadius="10px"
-                           />
+                        <div>
+                           <Stacked currentMode={currentMode} width="320px" height="360px" />
                         </div>
-                     </div>
-                     <div>
-                        <Stacked currentMode={currentMode} width="320px" height="360px" />
                      </div>
                   </div>
                </div>
             </div>
-         </div>
-      </div>);
+         </>
+      );
    }
 
    function content3() {
-      return (<div>
-         <div className="bg-main-dark-bg p-10">
-            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  mb-0 p-6 rounded-2xl w-[880px] mx-auto justify-between">
-               <div className="flex ">
-                  <p className="font-semibold text-xl">General Data</p>
-               </div>
-
-               <div className="mt-10 column gap-10 flex-wrap justify-between">
-                  <div className="border-r-1 border-color m-4 mr-0 pr-6">
-                     <div>
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {shortenAddress(generalData[0].token.address)}
-                           </span>
-                           <>
-                              <button className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-green-600 ml-10 mt-1 text-xs" onClick={() => setCopyText(generalData[0].token.address)}>
-                                 Copy address
-                              </button>
-                              <CopyToClipElement text={copyText} />
-                           </>
-                        </div>
-                        <p className="text-gray-500 mt-1">Address</p>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {generalData[0].token.name}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              {generalData[0].token.symbol}
-                           </span>
-                           <p className="text-gray-500 mt-1">Token name</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {generalData[0].token.decimals}
-                           </span>
-                           <p className="text-gray-500 mt-1">Decimals</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {(generalData[1].price_usd).toFixed(0)}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              USD
-                           </span>
-                           <p className="text-gray-500 mt-1">Price</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {(generalData[1].liquidity).toFixed(2)}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              BNB
-                           </span>
-                           <p className="text-gray-500 mt-1">Liquidity</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {(generalData[1].liquidity_usd).toFixed(0)}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              USD
-                           </span>
-                           <p className="text-gray-500 mt-1">Liquidity</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {(generalData[1].volume_24h).toFixed(2)}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              BNB
-                           </span>
-                           <p className="text-gray-500 mt-1">Volume 24h</p>
-                        </div>
-                     </div>
-                     <div className="mt-8">
-                        <div>
-                           <span className="text-xl font-semibold">
-                              {(generalData[1].volume_24h_usd).toFixed(0)}
-                           </span>
-                           <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
-                              USD
-                           </span>
-                           <p className="text-gray-500 mt-1">Volume</p>
-                        </div>
-                     </div>
+      return (
+         <>
+            <div className="bg-main-dark-bg p-10">
+               <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  mb-0 p-6 rounded-2xl w-[880px] mx-auto justify-between">
+                  <div className="flex ">
+                     <p className="font-semibold text-xl">General Data</p>
                   </div>
 
-
-                  <div className="m-4 mr-0 mt-6">
-                     <div className='pr-10  relative '>
+                  <div className="mt-10 column gap-10 flex-wrap justify-between">
+                     <div className="border-r-1 border-color m-4 mr-0 pr-6">
                         <div>
-                           <span className="text-xl text-white">
-                              {generalData[0].token.network}
-                           </span>
-                           <p className='text-gray-500 mt-1'>Network</p>
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {shortenAddress(generalData[0].token.address)}
+                              </span>
+                              <>
+                                 <button className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-green-600 ml-10 mt-1 text-xs" onClick={() => setCopyText(generalData[0].token.address)}>
+                                    Copy address
+                                 </button>
+                                 <CopyToClipElement text={copyText} />
+                              </>
+                           </div>
+                           <p className="text-gray-500 mt-1">Address</p>
                         </div>
-                        <div className="mt-4">
-                           <span className="text-xl text-white">
-                              {String(generalData[0].token.verified)}
-                           </span>
-                           <p className="text-gray-500 mt-1"> Verified contract</p>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {generalData[0].token.name}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 {generalData[0].token.symbol}
+                              </span>
+                              <p className="text-gray-500 mt-1">Token name</p>
+                           </div>
                         </div>
-                        <div className="mt-4">
-                           <span className="text-xl text-white">
-                              {generalData[0].token.creator ? generalData[0].token.creator : 'Enable to fetch'}
-                           </span>
-                           <p className="text-gray-500 mt-1">Creator</p>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {generalData[0].token.decimals}
+                              </span>
+                              <p className="text-gray-500 mt-1">Decimals</p>
+                           </div>
                         </div>
-                        <div className="mt-4">
-                           <span className="text-xl text-white">
-                              {generalData[0].token.owner ? generalData[0].token.owner : 'Enable to fetch'}
-                           </span>
-                           <p className="text-gray-500 mt-1">Owner</p>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {(generalData[1].price_usd).toFixed(0)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 USD
+                              </span>
+                              <p className="text-gray-500 mt-1">Price</p>
+                           </div>
                         </div>
-                        <div className="mt-4">
-                           <span className="text-xl text-white">
-                              {generalData[0].token.ownerSupply ? generalData[0].token.ownerSupply : 'Enable to fetch'}
-                           </span>
-                           <p className="text-gray-500 mt-1">Owner supply</p>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {(generalData[1].liquidity).toFixed(2)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 BNB
+                              </span>
+                              <p className="text-gray-500 mt-1">Liquidity</p>
+                           </div>
                         </div>
-                        <div className="mt-4">
-                           <span className="text-xl text-white">
-                              {generalData[0].token.burntSupply}
-                           </span>
-                           <p className="text-gray-500 mt-1">Burnt supply</p>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {(generalData[1].liquidity_usd).toFixed(0)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 USD
+                              </span>
+                              <p className="text-gray-500 mt-1">Liquidity</p>
+                           </div>
+                        </div>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {(generalData[1].volume_24h).toFixed(2)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 BNB
+                              </span>
+                              <p className="text-gray-500 mt-1">Volume 24h</p>
+                           </div>
+                        </div>
+                        <div className="mt-8">
+                           <div>
+                              <span className="text-xl font-semibold">
+                                 {(generalData[1].volume_24h_usd).toFixed(0)}
+                              </span>
+                              <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
+                                 USD
+                              </span>
+                              <p className="text-gray-500 mt-1">Volume</p>
+                           </div>
                         </div>
                      </div>
-                  </div>
-                  <button
-                     className="rounded-xl flex-end border-1 border-green-700 bg-green-800"
-                     onClick={() => getFlex()}>
-                     <span className="mx-6 my-4">{generalData[0].locks.length > 0 ? 'Locked Liquidity' : 'No Locked Liquidity'}</span>
-                  </button>
-               </div>
-               <div className={`${dropDown} text-gray-500`}>
-                  {(generalData[0].locks).map((item, index) => (
-                     <div
-                        className="m-2 border-b-1 border-green-800"
-                        key={index}
-                     >
-                        <div className="mt-4">
-                           <span className="text-white text-lg">{(item.address)}</span>
-                           <p className="text-gray-500">Address</p>
-                        </div>
-                        <div className="mt-2">
-                           <span className="text-white text-lg">{item.network}</span>
-                           <p className="text-gray-500">Network</p>
-                        </div>
-                        <div className="mt-2">
-                           <span className="text-white text-lg">{item.emission ? item.emission : '-'}</span>
-                           <p className="text-gray-500">Emission</p>
-                        </div>
-                        <div className="mt-2">
-                           <span className="text-white text-lg">{(item.locker)}</span>
-                           <p className="text-gray-500">Locker</p>
-                        </div>
-                        <div className="mt-2">
-                           <span className="text-white text-lg">{item.type}</span>
-                           <p className="text-gray-500">TypeAmount</p>
-                        </div>
-                        <div className="mt-2 mb-2">
-                           <span className="text-white text-lg">{item.hash}</span>
-                           <p className="text-gray-500">Hash</p>
-                        </div>
-                     </div>
-                  ))}
 
+
+                     <div className="m-4 mr-0 mt-6">
+                        <div className='pr-10  relative '>
+                           <div>
+                              <span className="text-xl text-white">
+                                 {generalData[0].token.network}
+                              </span>
+                              <p className='text-gray-500 mt-1'>Network</p>
+                           </div>
+                           <div className="mt-4">
+                              <span className="text-xl text-white">
+                                 {String(generalData[0].token.verified)}
+                              </span>
+                              <p className="text-gray-500 mt-1"> Verified contract</p>
+                           </div>
+                           <div className="mt-4">
+                              <span className="text-xl text-white">
+                                 {generalData[0].token.creator ? generalData[0].token.creator : 'Enable to fetch'}
+                              </span>
+                              <p className="text-gray-500 mt-1">Creator</p>
+                           </div>
+                           <div className="mt-4">
+                              <span className="text-xl text-white">
+                                 {generalData[0].token.owner ? generalData[0].token.owner : 'Enable to fetch'}
+                              </span>
+                              <p className="text-gray-500 mt-1">Owner</p>
+                           </div>
+                           <div className="mt-4">
+                              <span className="text-xl text-white">
+                                 {generalData[0].token.ownerSupply ? generalData[0].token.ownerSupply : 'Enable to fetch'}
+                              </span>
+                              <p className="text-gray-500 mt-1">Owner supply</p>
+                           </div>
+                           <div className="mt-4">
+                              <span className="text-xl text-white">
+                                 {generalData[0].token.burntSupply}
+                              </span>
+                              <p className="text-gray-500 mt-1">Burnt supply</p>
+                           </div>
+                        </div>
+                     </div>
+                     <button
+                        className="rounded-xl flex-end border-1 border-green-700 bg-green-800"
+                        onClick={() => getFlex()}>
+                        <span className="mx-6 my-4">{generalData[0].locks.length > 0 ? 'Locked Liquidity' : 'No Locked Liquidity'}</span>
+                     </button>
+                  </div>
+                  <div className={`${dropDown} text-gray-500`}>
+                     {(generalData[0].locks).map((item, index) => (
+                        <div
+                           className="m-2 border-b-1 border-green-800"
+                           key={index}
+                        >
+                           <div className="mt-4">
+                              <span className="text-white text-lg">{(item.address)}</span>
+                              <p className="text-gray-500">Address</p>
+                           </div>
+                           <div className="mt-2">
+                              <span className="text-white text-lg">{item.network}</span>
+                              <p className="text-gray-500">Network</p>
+                           </div>
+                           <div className="mt-2">
+                              <span className="text-white text-lg">{item.emission ? item.emission : '-'}</span>
+                              <p className="text-gray-500">Emission</p>
+                           </div>
+                           <div className="mt-2">
+                              <span className="text-white text-lg">{(item.locker)}</span>
+                              <p className="text-gray-500">Locker</p>
+                           </div>
+                           <div className="mt-2">
+                              <span className="text-white text-lg">{item.type}</span>
+                              <p className="text-gray-500">TypeAmount</p>
+                           </div>
+                           <div className="mt-2 mb-2">
+                              <span className="text-white text-lg">{item.hash}</span>
+                              <p className="text-gray-500">Hash</p>
+                           </div>
+                        </div>
+                     ))}
+
+                  </div>
                </div>
             </div>
-         </div>
-      </div>);
+         </>
+      );
    }
 
 
    return (
-
-
-
-
 
       <div className="mt-24">
 
          {generalData ? (
 
             <TabComponent heightAdjustMode="Auto" id="nestedTab1">
-               <TabItemsDirective>
+               <TabItemsDirective >
                   <TabItemDirective header={headertext[0]} content={content1} />
                   <TabItemDirective header={headertext[1]} content={content2} />
                   <TabItemDirective header={headertext[2]} content={content3} />

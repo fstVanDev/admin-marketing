@@ -41,17 +41,15 @@ const CreateNewUserProject = () => {
    }
 
 
-   let createProject = async (event) => {
+   const createProject = async (event) => {
 
 
       if (projectName === null || projectName === '' || tokenContract === null || tokenContract === '' || projectUrl === null || projectUrl === '' || projectType === null) {
-         <NotComplete />
+         window.alert('Please fill in all fields!')
       } else {
          event.preventDefault()
-         registerNewProject(projectName, tokenContract, projectUrl, projectType, userAccount, setIsCreate, chainId )
+         registerNewProject(projectName, tokenContract, projectUrl, projectType, userAccount, setIsCreate, chainId)
       }
-
-
    }
 
 
@@ -205,10 +203,10 @@ const CreateNewUserProject = () => {
                         </Transition>
                      </Menu>
 
-                    
+
 
                      {/* DropDown type */}
-                     
+
                      <Menu as="div" className="relative inline-block text-left my-2">
                         <div>
                            <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
@@ -276,9 +274,9 @@ const CreateNewUserProject = () => {
                         </Transition>
                      </Menu>
                   </div>
-                
 
-                  
+
+
                   <button
                      className='text-xl text-white rounded-lg mt-5 p-3 hover:bg-main-dark-bg w-full hover:bg-light-gray'
                      type="submit"

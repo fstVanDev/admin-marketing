@@ -15,5 +15,3 @@ export { default as Pie } from './Charts/Pie';
 export { default as Pyramid } from './Charts/Pyramid';
 export { default as Stacked } from './Charts/Stacked';
 export { default as Home } from './Home'
-export { default as DataSnapshot } from './DataSnapshot'
-export { default as Moonarch } from './Moonarch'

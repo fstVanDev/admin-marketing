@@ -14,7 +14,7 @@ import { useStateContext } from "../../context/ContextProvider";
 
 const LineChart = () => {
    const { currentMode } = useStateContext();
-   const { dataSnapshot, setDataSnapshot, currentSnapshot, setCurrentSnapshot, date } = useContext(StateContext)
+   const { dataSnapshot, date } = useContext(StateContext)
    const [gameList, setGameList] = useState([]);
 
 

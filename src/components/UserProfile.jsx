@@ -45,9 +45,8 @@ const UserProfile = () => {
    }
 
    const onClicks = async (value) => {
-      setCurrentUserProject(value)
-
-      await getCurrentProject(value, setGeneralData, currentUserProject, setDataSnapshot)
+      console.log(currentUserProject)
+      await getCurrentProject(value, setGeneralData, setCurrentUserProject)
 
 
       const datar = window.localStorage.getItem('currentProject')
