@@ -1,11 +1,10 @@
 import React, { useContext } from 'react'
-import { registerNewUser } from '../context/RequestProvider'
-import { StateContext } from '../context/StateProvider'
-import { useStateContext } from "../context/ContextProvider";
+import { registerNewUser } from '../../context/RequestProvider'
+import { StateContext } from '../../context/StateProvider'
+import { useStateContext } from "../../context/ContextProvider";
 
 
-
-const RegisterUser = () => {
+const RegisterNewUser = () => {
 
    const { userAccount, setUserEmail, userEmail, setCurrentWallet, setIsUserRegistered } = useContext(StateContext)
    const { setIsClicked, initialState } = useStateContext();
@@ -14,10 +13,8 @@ const RegisterUser = () => {
       event.preventDefault();
 
       registerNewUser(userAccount, userEmail, setIsUserRegistered)
-   } 
+   }
 
-   
- 
    return (
       <>
          <div className="flex justify-end">
@@ -52,5 +49,4 @@ const RegisterUser = () => {
    )
 }
 
-
-export default RegisterUser
+export default RegisterNewUser

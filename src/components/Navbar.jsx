@@ -6,10 +6,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { TranscactionContext } from "../context/TransactionProvidert"
 import avatar from "../data/avatar.jpg";
-import { Cart, Chat, Notification, UserProfile } from ".";
+import { Cart, Chat, MainUserProfile } from ".";
 import { useStateContext } from "../context/ContextProvider";
 import { StateContext } from "../context/StateProvider";
-import { justWatch } from "../context/RequestProvider";
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
    <TooltipComponent content={title} position="BottomCenter">
@@ -36,32 +35,14 @@ const Navbar = () => {
       handleClick,
       isClicked,
       setScreenSize,
-      screenSize, initialState, setIsClicked
+      screenSize
    } = useStateContext();
 
    const { connectWallet, disconnectWallet } = useContext(TranscactionContext)
-   const { userAccount, currentUserProject, generalData, setGeneralData, } = useContext(StateContext)
+   const { userAccount } = useContext(StateContext)
 
    const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-   // function toogleMon() {
-   //    setIsMonarch(true)
-   //    setIsSnapshot(false)
-   //    setIsCurrent(false)
-   // }
-
-
-   // function toggleData() {
-   //    setIsMonarch(false)
-   //    setIsSnapshot(true)
-   //    setIsCurrent(false)
-   // }
-
-   // function toggleCurrent() {
-   //    setIsMonarch(false)
-   //    setIsSnapshot(false)
-   //    setIsCurrent(true)
-   // }
 
    useEffect(() => {
       const handleResize = () => setScreenSize(window.innerWidth);
@@ -94,7 +75,7 @@ const Navbar = () => {
 
 
 
-         <div className="flex w-max-content relative">
+         <div className="flex w-max-content">
             <div className="my-auto mx-[12px]">
                <button
                   className={userAccount ? ("hover:drop-shadow-xl hover:bg-red-700 h-9 w-[180px] text-lg text-white rounded-lg bg-red-500") : ("hover:drop-shadow-xl hover:bg-green-700 w-full text-lg h-9 w-[180px] rounded-lg bg-green-500 text-white")}
@@ -120,13 +101,9 @@ const Navbar = () => {
 
          {isClicked.cart && <Cart />}
          {isClicked.chat && <Chat />}
-         {isClicked.notification && <Notification />}
-         {isClicked.userProfile &&
-            <UserProfile />
-         }
+         {isClicked.userProfile && <MainUserProfile />}
 
       </div>
-      // </div >
    );
 };
 
