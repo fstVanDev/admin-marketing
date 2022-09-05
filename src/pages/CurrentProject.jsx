@@ -20,7 +20,7 @@ const CurrentProject = () => {
 
 
    return (
-      <div className="mt-24">
+      <div className="relative mt-24 z-0">
          {generalData ? (
             <TabComponent heightAdjustMode="Auto" id="nestedTab1">
                <TabItemsDirective >

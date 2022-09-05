@@ -38,7 +38,7 @@ const Snapshot = () => {
    }, [dataSnapshot])
 
    return (
-      <div className="bg-main-dark-bg p-10">
+      <div className="bg-main-dark-bg p-10 z-10">
          <div className="dark:text-gray-200  flex flex-wrap justify-center mx-auto my-4 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
             <div className="flex w-full justify-between items-center gap-2 mb-10 w-max-content">
                <p className="text-xl font-semibold">Sales Overview</p>
@@ -60,7 +60,7 @@ const Snapshot = () => {
                      leaveFrom="transform opacity-100 scale-100"
                      leaveTo="transform opacity-0 scale-95"
                   >
-                     <Menu.Items className="origin-top-right absolute z-[1000] w-[140px] rounded-lg p-auto shadow-lg bg-main-dark-bg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                     <Menu.Items className="origin-top-right absolute w-[140px] rounded-lg p-auto shadow-lg bg-main-dark-bg ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <div className="py-1 rounded-lg">
 
                            {daysTracked.daysTracked >= 1 ? (

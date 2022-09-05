@@ -122,7 +122,7 @@ const General = () => {
 
 
   return (
-     <div className="bg-main-dark-bg p-10">
+     <div className="bg-main-dark-bg p-10 z-100">
         <div className="flex flex-wrap lg:flex-nowrap justify-center ">
            <div className="flex m-3 flex-wrap justify-between gap-1 items-center">
               {earningData.map((item) => (
