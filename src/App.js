@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { getCurrentProject, getDataSnapshot } from './context/RequestProvider'
 
 import { Navbar, Sidebar, ThemeSettings } from './components';
 import { CurrentProject, Orders, Employees, Stacked, Pyramid, Customers, Line, Area, Bar, Pie, Financial, Home } from './pages';

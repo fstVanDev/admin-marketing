@@ -1,7 +1,6 @@
 import React from 'react'
 
 import axios from 'axios'
-import { convertStringToValue } from '@syncfusion/ej2/maps';
 const qs = require('qs')
 
 
@@ -163,7 +162,6 @@ export const getCurrentProject = async (value, setGeneralData, setCurrentUserPro
 
          axios(config2)
             .then(function (response) {
-               // console.log(JSON.stringify(response.data), 'from just watch');
                setGeneralData(response.data)
 
 
@@ -181,42 +179,8 @@ export const getCurrentProject = async (value, setGeneralData, setCurrentUserPro
 }
 
 
-export const justWatch = async (value, setGeneralData) => {
-
-   const datas = window.localStorage.getItem(`currentProject_${value}`)
-   const userProjectsData = JSON.parse(datas)
-
-   console.log(userProjectsData.token_contract, 'token address')
-
-   var data = qs.stringify({
-      'token_address': userProjectsData.token_contract,
-      'chain_id': '56'
-   });
-   console.log(data)
-   var config = {
-      method: 'post',
-      url: `${process.env.REACT_APP_BACK_URL}/token_info`,
-
-      headers: {
-         'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: data
-   };
-
-   axios(config)
-      .then(function (response) {
-         console.log(JSON.stringify(response.data), 'from just watch');
-         setGeneralData(response.data)
-         console.log(response.data)
-      })
-      .catch(function (error) {
-         console.log(error);
-      });
-}
-
-
 // get data_snapshot
-export const getDataSnapshot = async (value, setDataSnapshot, toDate, fromDate) => {
+export const getDataSnapshot = async ( setDataSnapshot, toDate, fromDate) => {
 
    const data2 = window.localStorage.getItem('currentProject')
    const data1 = JSON.parse(data2)
@@ -311,28 +275,11 @@ export const getCurrentProjectbyProjectId = async (project_id, setGeneralData) =
 }
 
 
-export const getDataSnapshotbyProjectId = async (project_id, setDataSnapshot) => {
 
-   var data = qs.stringify({
-      'project_id': project_id,
-      'from_date': '2022-8-26'
-   });
-   var config = {
-      method: 'post',
-      mode: 'no-cors',
-      url: `${process.env.REACT_APP_BACK_URL}/data_snapshot`,
-      headers: {
-         'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      data: data
-   };
-
-   axios(config)
-      .then(function (response) {
-         console.log(response.data, 'from snapshot')
-         setDataSnapshot(response.data)
-      })
-      .catch(function (error) {
-         console.log(error);
-      });
+export const getCurrentDate = (newDate, i) => {
+   var days = newDate.getDate();
+   var month = newDate.getMonth();
+   var year = newDate.getFullYear();
+   const date = year + '-' + (month + 1) + '-' + (days - i)
+   return date
 }

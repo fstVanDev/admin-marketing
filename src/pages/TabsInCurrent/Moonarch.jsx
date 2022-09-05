@@ -82,7 +82,7 @@ const Moonarch = () => {
                   <div className="mt-8">
                      <div>
                         <span className="text-xl font-semibold">
-                           {(generalData[1].price_usd).toFixed(0)}
+                           {(generalData[1].price_usd).toFixed(10)}
                         </span>
                         <span className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-gray-600 ml-3 text-xs">
                            USD

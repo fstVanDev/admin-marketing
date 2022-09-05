@@ -4,7 +4,7 @@ import { StateContext } from "../../context/StateProvider";
 import RegisterNewUser from "./RegisterNewUser";
 import CreateNewProject from "./CreateNewProject";
 import { NavLink } from "react-router-dom";
-import { getCurrentProject, getDataSnapshot } from "../../context/RequestProvider";
+import { getCurrentProject, getDataSnapshot, getCurrentDate } from "../../context/RequestProvider";
 
 
 
@@ -29,24 +29,11 @@ const MainUserProfile = () => {
       setIsOpen(!isOpen);
    }
 
-   function getCurrentDate(newDate) {
-      var days = newDate.getDate();
-      var month = newDate.getMonth();
-      var year = newDate.getFullYear();
-      const date = year + '-' + (month + 1) + '-' + days
-      return date
-   }
-
    const clickOnProject = async (value) => {
       console.log(currentUserProject)
       await getCurrentProject(value, setGeneralData, setCurrentUserProject)
 
-
-      const datar = window.localStorage.getItem('currentProject')
-      const userDatar = JSON.parse(datar)
-
-      const fromDate = getCurrentDate(new Date(Number(userDatar.created._seconds) * 1000))
-      await getDataSnapshot(value, setDataSnapshot, getCurrentDate(new Date()), fromDate)
+      await getDataSnapshot(setDataSnapshot, getCurrentDate(new Date(), 0), getCurrentDate(new Date(), 1))
    }
 
    const bindValueToClick = (value) => {

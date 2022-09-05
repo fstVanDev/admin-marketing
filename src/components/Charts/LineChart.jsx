@@ -37,7 +37,7 @@ const LineChart = () => {
          yName: 'y',
          name: 'With wallet',
          width: '2',
-         marker: { visible: true, width: 5, height: 5 },
+         // marker: { visible: true, width: 5, height: 5 },
          type: 'Line'
       },
 
@@ -66,8 +66,8 @@ const LineChart = () => {
       labelFormat: '{value}',
       rangePadding: 'None',
       minimum: 0,
-      maximum: 10000,
-      interval: 1000,
+      maximum: 1000,
+      interval: 100,
       lineStyle: { width: 0 },
       majorTickLines: { width: 0 },
       minorTickLines: { width: 0 },
@@ -91,42 +91,49 @@ const LineChart = () => {
             let b = []
             let c = []
 
-            if (date !== 'NaN-NaN-NaN' || '') {
+            var arr = date.split(',')
 
-               console.log(date)
+            if (typeof date !== 'string' && date.length !== 0) {
+               // if (date !== 'NaN-NaN-NaN' || date !== "" || date!==  null || date.length !== 0) {
+
+               console.log(date.length, 'date')
+
+
 
                for (let i = 0; i < dataSnapshot.length; i++) {
+                  for (let j = 0; j < arr.length; j++) {
+                     if (arr[j] === dataSnapshot[i].date) {
 
-                  if (date === dataSnapshot[i].date) {
-
-                     dataSnapshot[i].everyHour.map((item, index) => (
-                        a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
-                     ))
-                     dataSnapshot[i].everyHour.map((item, index) => (
-                        b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
-                     ))
-                     dataSnapshot[i].everyHour.map((item, index) => (
-                        c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
-                     ))
-                     await setGameList(gameList => [...gameList, a]);
-                     await setGameList(gameList => [...gameList, b]);
-                     await setGameList(gameList => [...gameList, c]);
+                        dataSnapshot[i].everyHour.map((item, index) => (
+                           a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity) })
+                        ))
+                        dataSnapshot[i].everyHour.map((item, index) => (
+                           b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd) })
+                        ))
+                        dataSnapshot[i].everyHour.map((item, index) => (
+                           c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd) })
+                        ))
+                        await setGameList(gameList => [...gameList, a]);
+                        await setGameList(gameList => [...gameList, b]);
+                        await setGameList(gameList => [...gameList, c]);
+                     }
                   }
                }
             } else {
 
                dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
-                  a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity).toFixed(2) })
+                  a.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity) })
                ))
                dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
-                  b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd).toFixed(2) })
+                  b.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].liquidity_usd) })
                ))
                dataSnapshot[dataSnapshot.length - 1].everyHour.map((item, index) => (
-                  c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd).toFixed(2) })
+                  c.push({ x: `${new Date(item.timestamp)}`, y: parseInt(item.project_general_info[1].volume_24h_usd) })
                ))
                await setGameList(gameList => [...gameList, a]);
                await setGameList(gameList => [...gameList, b]);
                await setGameList(gameList => [...gameList, c]);
+               console.log(gameList)
 
             }
 
@@ -136,6 +143,7 @@ const LineChart = () => {
       }
       fetchData()
 
+     
    }, [setGameList])
 
 

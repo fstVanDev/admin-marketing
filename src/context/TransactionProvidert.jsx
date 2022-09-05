@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { checkRegisterAndGetUserProjects, getCurrentProjectbyProjectId, getDataSnapshotbyProjectId } from './RequestProvider';
+import { checkRegisterAndGetUserProjects, getCurrentProjectbyProjectId, getDataSnapshot, getCurrentDate } from './RequestProvider';
 import { StateContext } from './StateProvider';
 import { LocalContext } from './LocalProvider';
 
@@ -39,7 +39,7 @@ export const TransactionProvider = ({ children }) => {
 
             checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore, userAccount)
             getCurrentProjectbyProjectId(data1.project_id, setGeneralData)
-            getDataSnapshotbyProjectId(data1.project_id, setDataSnapshot)
+            getDataSnapshot(setDataSnapshot, getCurrentDate(new Date(), 0), getCurrentDate(new Date(), 1))
          } else {
             console.log('none account in check wallet')
          }
