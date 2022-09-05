@@ -10,7 +10,7 @@ import Loader from "../components/Loader";
 
 
 const CurrentProject = () => {
-   const { generalData } = useContext(StateContext)
+   const { generalData, viewCreate } = useContext(StateContext)
 
    let headertext = [
       { text: "General" },
@@ -20,10 +20,10 @@ const CurrentProject = () => {
 
 
    return (
-      <div className="relative mt-24 z-0">
+      <div className={viewCreate === true ? 'hidden' : 'mt-2 z-0'}>
          {generalData ? (
             <TabComponent heightAdjustMode="Auto" id="nestedTab1">
-               <TabItemsDirective >
+               <TabItemsDirective>
                   <TabItemDirective header={headertext[0]} content={General} />
                   <TabItemDirective header={headertext[1]} content={Snapshot} />
                   <TabItemDirective header={headertext[2]} content={Moonarch} />

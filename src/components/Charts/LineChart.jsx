@@ -73,14 +73,6 @@ const LineChart = () => {
       minorTickLines: { width: 0 },
    };
 
-   const Loader = () => {
-      return (
-         <div className="flex items-center justify-center ">
-            <div className="w-16 h-16 border-b-4 border-yellow-900 rounded-full animate-spin"></div>
-         </div>
-      )
-   }
-
 
    useEffect(() => {
       const fetchData = async () => {
@@ -116,6 +108,9 @@ const LineChart = () => {
                         await setGameList(gameList => [...gameList, a]);
                         await setGameList(gameList => [...gameList, b]);
                         await setGameList(gameList => [...gameList, c]);
+
+                        console.log(gameList)
+
                      }
                   }
                }

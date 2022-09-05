@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { SiShopware } from "react-icons/si";
 import { MdOutlineCancel } from "react-icons/md";
 import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 import { links } from "../data/dummy";
 import { useStateContext } from "../context/ContextProvider";
+import { StateContext } from "../context/StateProvider";
 
 const Sidebar = () => {
    const { currentColor, activeMenu, setActiveMenu, screenSize } =
       useStateContext();
+   
+   const {viewCreate} = useContext(StateContext)
 
    const handleCloseSideBar = () => {
       if (activeMenu !== undefined && screenSize <= 900) {
@@ -23,7 +26,7 @@ const Sidebar = () => {
 
    return (
       <>
-         {!activeMenu && (
+         {!activeMenu && viewCreate === false && (
             <div className="ml-2 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
                   <div className="flex justify-between items-center">
                      <Link

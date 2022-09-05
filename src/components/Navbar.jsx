@@ -170,7 +170,7 @@ const Navbar = () => {
             <OutsideAlerter>
                <UserProfile />
             </OutsideAlerter>
-            {/* {viewCreate === true ? (<OutsideAlerter><CreateNewProject /></OutsideAlerter>) : (null)} */}
+            {viewCreate === true ? (<OutsideAlerter><CreateNewProject /></OutsideAlerter>) : (null)}
 
          </div>
       </div>

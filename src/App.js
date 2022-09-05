@@ -109,7 +109,7 @@ const App = () => {
          <BrowserRouter>
 
             <div className="flex relative dark:bg-main-dark-bg z-0" >
-               {viewCreate === true ? (<OutsideAlerter><CreateNewProject /></OutsideAlerter>) : (null)}
+               {/* {viewCreate === true ? (<OutsideAlerter><CreateNewProject /></OutsideAlerter>) : (null)} */}
 
                <div className="fixed right-4 bottom-4" style={{ zIndex: '900' }}>
                   <TooltipComponent
