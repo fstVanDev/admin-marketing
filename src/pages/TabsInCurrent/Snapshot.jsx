@@ -20,7 +20,7 @@ const Snapshot = () => {
 
    const days = window.localStorage.getItem('currentProject')
    const daysTracked = JSON.parse(days)
-   console.log(daysTracked)
+   console.log(daysTracked.daysTracked)
 
    const handleForm = async (event) => {
 
