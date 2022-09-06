@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Loader from '../../components/Loader'
 import { IoIosMore } from "react-icons/io";
 import { StateContext } from '../../context/StateProvider';
@@ -8,10 +8,16 @@ import { BsBoxSeam } from 'react-icons/bs';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import LiquidityChart from '../../components/Charts/LiquidityChart';
 
+
+
+
+
 const General = () => {
    const { setViewChart } = React.useContext(StateContext)
    const data = window.localStorage.getItem(`currentProject`)
    const userProjectsData = JSON.parse(data)
+
+   const [name, setName] = useState()
 
    const earningData = [
       {
@@ -122,6 +128,15 @@ const General = () => {
    ];
 
 
+   const handleData = (event) => {
+      setName(event)
+      setViewChart(true)
+   }
+
+
+
+
+
    return (
       <div className="bg-main-dark-bg p-10 z-100">
 
@@ -209,14 +224,24 @@ const General = () => {
                <p className="text-xl font-semibold">Weekly Stats</p>
                <button
                   type="button"
-                  className="text-xl font-semibold text-gray-500"
-                  onClick={() => setViewChart(true)}
+                  id='liquidity_usd'
+                  className="text-xl m-2 font-semibold text-gray-500"
+                  onClick={(event) => handleData(event.target.id)}
                >
                   LiquiditytChart
                </button>
+               <button
+                  type="button"
+                  id='volume_24h_usd'
+                  className="text-xl m-2 font-semibold text-gray-500"
+                  onClick={(event) => handleData(event.target.id)}
+               >
+                  VolumeChart
+               </button>
             </div>
          </div>
-         <LiquidityChart/>
+         < LiquidityChart parametr={name} />
+
       </div>
    )
 }
