@@ -5,6 +5,7 @@ import { TabComponent, TabItemDirective, TabItemsDirective } from "@syncfusion/e
 import Moonarch from "./TabsInCurrent/Moonarch";
 import Snapshot from "./TabsInCurrent/Snapshot";
 import General from "./TabsInCurrent/General";
+import AllIn from "./TabsInCurrent/AllIn";
 import Loader from "../components/Loader";
 
 
@@ -16,6 +17,7 @@ const CurrentProject = () => {
       { text: "General" },
       { text: "Snapshot" },
       { text: "Monarch" },
+      { text: 'All In' }
    ];
 
 
@@ -27,6 +29,7 @@ const CurrentProject = () => {
                   <TabItemDirective header={headertext[0]} content={General} />
                   <TabItemDirective header={headertext[1]} content={Snapshot} />
                   <TabItemDirective header={headertext[2]} content={Moonarch} />
+                  <TabItemDirective header={headertext[3]} content={AllIn} />
                </TabItemsDirective>
             </TabComponent>
          ) : (<Loader />)}
