@@ -36,6 +36,8 @@ export const StateProvider = ({ children }) => {
    const [isOpen, setIsOpen] = useState(false)
    const [viewCreate, setViewCreate] = useState(false)
 
+   const [viewChart, setViewChart] = useState(false)
+
    return (
       <StateContext.Provider value={{
          userAccount, setUserAccount,
@@ -60,7 +62,8 @@ export const StateProvider = ({ children }) => {
          date, setDate,
          currentSnapshot, setCurrentSnapshot,
          isOpen, setIsOpen,
-         viewCreate, setViewCreate
+         viewCreate, setViewCreate,
+         viewChart, setViewChart
       }}>
          {children}
       </StateContext.Provider>
