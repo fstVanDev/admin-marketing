@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
-import CustomModal from '../Modal';
 import { StateContext } from '../../context/StateProvider'
 import { useStateContext } from '../../context/ContextProvider';
 
@@ -75,7 +74,7 @@ export const convertStampDate = (unixtimestamp) => {
 
 
 
-const LiquidityChart = ({ parametr }) => {
+const ChartClassic = ({ parametr }) => {
    const { viewChart, setViewChart, dataSnapshot } = useContext(StateContext)
    const [gameList, setGameList] = useState([]);
    const { currentMode } = useStateContext();
@@ -165,7 +164,7 @@ const LiquidityChart = ({ parametr }) => {
    useEffect(() => {
       console.log(bool)
 
-      if (typeof parametr === 'string' ) {
+      if (typeof parametr === 'string') {
          if (bool === false) {
             console.log(parametr)
 
@@ -178,7 +177,7 @@ const LiquidityChart = ({ parametr }) => {
 
 
    const handleBool = () => {
-      
+
       setBool(false)
       setViewChart(false)
       setGameList([])
@@ -193,14 +192,12 @@ const LiquidityChart = ({ parametr }) => {
 
 
    return (
-      <CustomModal visible={viewChart} onClose={() => handleBool()}>
-         <div className="absolute m-auto bg-[#33373E] left-0 right-0 blur-none z-1000 w-[800px] h-[600px] bg-gray-800 m-auto rounded-lg border-1  pt-8">
+      <div className=" bg-[#33373E] blur-none z-1000 w-[600px] h-[400px] bg-gray-800 rounded-lg border-1  pt-8">
 
-            <Line  options={options} data={data} />;
+         <Line options={options} data={data} />;
 
-         </div>
-      </CustomModal>
+      </div>
    )
 }
 
-export default LiquidityChart
+export default ChartClassic
