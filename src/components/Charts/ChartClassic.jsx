@@ -28,7 +28,6 @@ export const getChartLiquidityData = (dataSnapshot, setGameList, gameList, date,
       }
    }
    setGameList(arr1)
-   console.log(gameList)
 
    for (let k = 0; k < arr.length; k++) {
       date.push(convertStampDate(arr[k]))
@@ -162,11 +161,9 @@ const ChartClassic = ({ parametr }) => {
    };
 
    useEffect(() => {
-      console.log(bool)
 
       if (typeof parametr === 'string') {
          if (bool === false) {
-            console.log(parametr)
 
             getChartLiquidityData(dataSnapshot, setGameList, gameList, date, setDate, parametr)
             setBool(true)

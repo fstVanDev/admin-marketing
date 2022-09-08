@@ -114,6 +114,72 @@ const AllIn = () => {
    //    setViewChart(true)
    // }
 
+   const araayChecked = []
+
+   const mainObj = {
+      obj: String,
+      index: Number,
+      checked: Boolean
+   }
+
+   const doAction = () => {
+
+      if (dataArray.length !== 0) {
+         var arr = Object.keys(paramsDataArray)
+
+         for (let i = 0; i < arr.length; i++) {
+
+            if (dataArray.includes(arr[i]) === true) {
+
+               araayChecked.push(true)
+
+            } else {
+
+               araayChecked.push(false)
+
+            }
+         }
+         return (
+
+            araayChecked.map((item, index) => (
+               <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={Object.keys(paramsDataArray)[index]}>
+                  <input type='checkbox' id={Object.keys(paramsDataArray)[index]} value={Object.keys(paramsDataArray)[index]} checked={item} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
+                  <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' htmlFor={Object.keys(paramsDataArray)[index]}>{Object.values(paramsDataArray)[index]}</label>
+               </div>
+            ))
+         )
+
+      } else {
+         var arr = Object.keys(paramsDataArray)
+
+         for (let i = 0; i < arr.length; i++) {
+
+            if (dataArray.includes(arr[i]) !== true) {
+               araayChecked.push(false)
+            }
+         }
+         return (
+
+            araayChecked.map((item, index) => (
+               <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={Object.keys(paramsDataArray)[index]}>
+                  <input type='checkbox' id={Object.keys(paramsDataArray)[index]} value={Object.keys(paramsDataArray)[index]} checked={item} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
+                  <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' htmlFor={Object.keys(paramsDataArray)[index]}>{Object.values(paramsDataArray)[index]}</label>
+               </div>
+            ))
+         )
+      }
+
+   }
+
+   // useEffect(() => {
+
+   //    if (dataArray.length !== 0) {
+   //       doAction()
+   //    } else {
+   //       doAction()
+   //    }
+   //    console.log(dataArray)
+   // }, [dataArray])
 
    useEffect(() => {
       const getUsers = () => {
@@ -131,9 +197,6 @@ const AllIn = () => {
       getUsers()
    }, [dataSnapshot])
 
-   useEffect(() => {
-      console.log(dataArray)
-   }, [dataArray])
 
    return (
       <>
@@ -285,12 +348,9 @@ const AllIn = () => {
                <div className='flex justify-center gap-7 bg-secondary-dark-bg w-[max-content] h-[80px] rounded-lg mx-auto mt-3'>
                   <div className='flex justiify-around px-4' >
 
-                     {Object.keys(paramsDataArray).map((key) => (
-                        <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={key}>
-                           <input type='checkbox' id={key} value={key} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
-                           <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' htmlFor={key}>{paramsDataArray[key]}</label>
-                        </div>
-                     ))}
+
+                     {doAction()}
+
                      <button className='w-fit h-[44px] rounded-lg border-1 bg-main-bg px-3 py-2 my-auto ml-8'>Apply</button>
 
                   </div>
@@ -299,19 +359,19 @@ const AllIn = () => {
                </div>
 
 
-               {dataArray.length > 0 && viewChart === true ? (
-                <div  className='flex flex-wrap mx-auto'>
-                  <>
-                     {dataArray.map((item) => (
-                        // <div key={item} >
-                        //    <ChartClassic parametr={item} />
-                        // </div>
-                        <div className='mt-5 mx-auto'>
-                           <ChartClassic parametr={item} />
+               {dataArray.length > 0 ? (
+                  <div className='flex flex-wrap mx-auto'>
+                     <>
+                        {dataArray.map((item) => (
+                           // <div key={item} >
+                           //    <ChartClassic parametr={item} />
+                           // </div>
+                           <div className='mt-5 mx-auto'>
+                              <ChartClassic parametr={item} />
 
-                        </div>
-                        
-                     ))}
+                           </div>
+
+                        ))}
                      </>
                   </div>
                ) :
@@ -324,9 +384,66 @@ const AllIn = () => {
 
 
             </div>
-         ) : (<Loader />)}
+         ) : (<Loader />)
+         }
       </>
    )
 }
 
 export default AllIn
+
+
+
+// {
+//    dataArray.map((item) => {
+//       const obj = {
+//          obj: String,
+//          checked: Boolean
+//       }
+//       if (Object.keys(paramsDataArray).includes(item) === true) {
+//          obj.obj = item
+//          obj.checked = true
+//       }
+
+//       return (
+//          <>
+//             {Object.keys(paramsDataArray).map((key) => {
+
+
+//                <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={key}>
+//                   <input type='checkbox' id={key} value={key} checked={obj.obj === key ? obj.checked : !obj.checked} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
+//                   <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' key={key} htmlFor={key}>{paramsDataArray[key]}</label>
+//                </div>
+
+//             })}
+//          </>
+//       )
+//    }
+//    )
+// }
+
+
+// {
+//    Object.keys(paramsDataArray).map((key) => {
+
+//       let mainObj = {}
+//       dataArray.map((item) => {
+//          const obj = {
+//             obj: String,
+//             checked: Boolean
+//          }
+//          if (Object.keys(paramsDataArray).includes(item) === true) {
+//             obj.obj = item
+//             obj.checked = true
+//          }
+//          mainObj = obj
+//       })
+//       console.log(mainObj, '121212')
+//       return (
+//          <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={key}>
+//             <input type='checkbox' id={key} value={key} checked={false} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
+//             <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' htmlFor={key}>{paramsDataArray[key]}</label>
+//          </div>
+//       )
+//    })
+// }

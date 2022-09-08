@@ -51,12 +51,12 @@ const Moonarch = () => {
                         <span className="text-xl font-semibold">
                            {shortenAddress(generalData[0].token.address)}
                         </span>
-                        <>
+                        <div>
                            <button className="p-1.5 hover:drop-shadow-xl rounded-full text-white bg-green-600 ml-10 mt-1 text-xs" onClick={() => setCopyText(generalData[0].token.address)}>
                               Copy address
                            </button>
                            <CopyToClipElement text={copyText} />
-                        </>
+                        </div>
                      </div>
                      <p className="text-gray-500 mt-1">Address</p>
                   </div>

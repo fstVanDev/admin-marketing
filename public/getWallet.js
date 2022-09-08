@@ -140,7 +140,7 @@ async function users_without_wallet(projectKey, type) {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/user_undefined", requestOptions)
+   fetch("https://wallettreatment.herokuapp.com/user_undefined", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -209,7 +209,7 @@ async function postData(wallet, project_id, chain_id) {
     redirect: "follow",
   };
 
-  fetch("http://localhost:3001/user_connected", requestOptions)
+  fetch("https://wallettreatment.herokuapp.com/user_connected", requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
