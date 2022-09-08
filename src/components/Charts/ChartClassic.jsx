@@ -1,9 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { StateContext } from '../../context/StateProvider'
-import { useStateContext } from '../../context/ContextProvider';
-
-
-
 import {
    Chart as ChartJS,
    CategoryScale,
@@ -21,10 +17,19 @@ import { Line } from 'react-chartjs-2';
 export const getChartLiquidityData = (dataSnapshot, setGameList, gameList, date, setDate, liquidity_usd) => {
    var arr = []
    var arr1 = []
-   for (let i = 0; i < dataSnapshot.length; i++) {
-      for (let j = 0; j < dataSnapshot[i].everyHour.length; j++) {
-         arr1.push(dataSnapshot[i].everyHour[j].project_general_info[1][liquidity_usd])
-         arr.push(dataSnapshot[i].everyHour[j].timestamp)
+   if (liquidity_usd === 'price_usd' || liquidity_usd === 'volume_24h_usd' || liquidity_usd === 'liquidity_usd') {
+      for (let i = 0; i < dataSnapshot.length; i++) {
+         for (let j = 0; j < dataSnapshot[i].everyHour.length; j++) {
+            arr1.push(dataSnapshot[i].everyHour[j].project_general_info[1][liquidity_usd])
+            arr.push(dataSnapshot[i].everyHour[j].timestamp)
+         }
+      }
+   } else {
+      for (let i = 0; i < dataSnapshot.length; i++) {
+         for (let j = 0; j < dataSnapshot[i].everyHour.length; j++) {
+            arr1.push(dataSnapshot[i].everyHour[j].project_info[liquidity_usd])
+            arr.push(dataSnapshot[i].everyHour[j].timestamp)
+         }
       }
    }
    setGameList(arr1)
@@ -74,9 +79,8 @@ export const convertStampDate = (unixtimestamp) => {
 
 
 const ChartClassic = ({ parametr }) => {
-   const { viewChart, setViewChart, dataSnapshot } = useContext(StateContext)
+   const { dataSnapshot } = useContext(StateContext)
    const [gameList, setGameList] = useState([]);
-   const { currentMode } = useStateContext();
    const [bool, setBool] = useState(false)
 
    const [date, setDate] = useState([])
@@ -91,48 +95,6 @@ const ChartClassic = ({ parametr }) => {
       Legend
    );
 
-   var lineCustomSeries = [
-      {
-         dataSource: gameList,
-         xName: 'x',
-         yName: 'y',
-         name: 'Liquidity USD',
-         width: '1',
-         marker: { visible: true, width: 5, height: 5 },
-         type: 'Line'
-      },
-   ];
-
-   const LinePrimaryXAxis = {
-      valueType: 'DateTime',
-      labelFormat: 'h',
-      intervalType: 'Hours',
-      edgeLabelPlacement: 'Shift',
-      majorGridLines: { width: 1 },
-      background: 'white',
-   };
-
-   const LinePrimaryYAxis = {
-      labelFormat: '{value}',
-      rangePadding: 'None',
-      minimum: 0,
-      maximum: parseInt(Math.max(gameList)),
-      interval: 100,
-      lineStyle: { width: 0 },
-      majorTickLines: { width: 1 },
-      minorTickLines: { width: 2 },
-   };
-
-   const getCurrentDate = (newDate) => {
-      newDate = new Date(newDate)
-      var days = newDate.getDate();
-      var month = newDate.getMonth();
-      var year = newDate.getFullYear();
-      var hours = newDate.getHours();
-      const date = (month + 1) + 'm-' + days + 'd-' + hours + 'h'
-      return date
-   }
-
    const options = {
       responsive: true,
       plugins: {
@@ -141,10 +103,35 @@ const ChartClassic = ({ parametr }) => {
          },
          title: {
             display: true,
-            text: 'Chart.js Line Chart',
+            // text: 'Chart.js Line Chart',
          },
       },
    };
+
+   const intoLabel = (parametr) => {
+      switch (parametr) {
+         case 'users_connected_wallet':
+            return 'Users connected'
+            
+         case 'users_with_wallet':
+            return 'Users with wallet'
+         
+         case 'users_without_wallet':
+            return 'Users without wallet'
+         
+         case 'price_usd':
+            return 'Price (USD)'
+         
+         case 'volume_24h_usd':
+            return 'Volume 24H (USD)'
+         
+         case 'liquidity_usd':
+            return 'Liquidity (USD)'
+         
+         default:
+            break;
+      }
+   }
 
    const labels = date;
 
@@ -152,7 +139,7 @@ const ChartClassic = ({ parametr }) => {
       labels,
       datasets: [
          {
-            label: 'Volume 24H USD',
+            label: intoLabel(parametr),
             data: gameList,
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -173,14 +160,6 @@ const ChartClassic = ({ parametr }) => {
    }, [dataSnapshot, parametr])
 
 
-   const handleBool = () => {
-
-      setBool(false)
-      setViewChart(false)
-      setGameList([])
-      setDate([])
-   }
-
    const profitChartRef = useRef();
 
    if (profitChartRef?.current) {
@@ -189,9 +168,8 @@ const ChartClassic = ({ parametr }) => {
 
 
    return (
-      <div className=" bg-[#33373E] blur-none z-1000 w-[600px] h-[400px] bg-gray-800 rounded-lg border-1  pt-8">
-
-         <Line options={options} data={data} />;
+      <div className=" bg-[#33373E] blur-none z-1000 w-[600px] px-3 h-[400px] bg-gray-800 rounded-lg border-1 py-7 mb-8">
+         <Line options={options} data={data}/>;
 
       </div>
    )

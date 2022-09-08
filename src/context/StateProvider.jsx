@@ -35,7 +35,7 @@ export const StateProvider = ({ children }) => {
    const [date, setDate] = useState('')
    const [isOpen, setIsOpen] = useState(false)
    const [viewCreate, setViewCreate] = useState(false)
-
+   const [checboxData, setCheckboxData] = useState(null)
    const [viewChart, setViewChart] = useState(false)
 
    return (
@@ -63,7 +63,8 @@ export const StateProvider = ({ children }) => {
          currentSnapshot, setCurrentSnapshot,
          isOpen, setIsOpen,
          viewCreate, setViewCreate,
-         viewChart, setViewChart
+         viewChart, setViewChart, 
+         checboxData, setCheckboxData
       }}>
          {children}
       </StateContext.Provider>

@@ -1,7 +1,6 @@
 import { StateContext } from '../../context/StateProvider'
 import Loader from '../../components/Loader'
-/* eslint-disable no-sequences */
-import React, { Fragment, useContext, useEffect, useState, useCallback } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import DatePicker from "../../components/DatePicker";
 import { getDataSnapshot, getCurrentDate } from '../../context/RequestProvider'
@@ -16,12 +15,12 @@ import ChartClassic from '../../components/Charts/ChartClassic';
 
 
 const AllIn = () => {
-   const { dataSnapshot, setDataSnapshot, setViewChart, viewChart } = useContext(StateContext)
+   const { dataSnapshot, setDataSnapshot, setViewChart, checboxData, setCheckboxData } = useContext(StateContext)
 
    const [allUsers, setAllUsers] = useState(null)
    // const [name, setName] = useState()
 
-   const [dataArray, setDataArray] = useState([])
+   const [dataArray, setDataArray] = useState(checboxData !== null ? checboxData : [])
 
    function classNames(...classes) {
       return classes.filter(Boolean).join(' ')
@@ -109,34 +108,16 @@ const AllIn = () => {
       liquidity_usd: 'Liquidity (USD)'
    }
 
-   // const handleData = (event) => {
-   //    setName(event)
-   //    setViewChart(true)
-   // }
-
    const araayChecked = []
 
-   const mainObj = {
-      obj: String,
-      index: Number,
-      checked: Boolean
-   }
-
    const doAction = () => {
-
       if (dataArray.length !== 0) {
          var arr = Object.keys(paramsDataArray)
-
          for (let i = 0; i < arr.length; i++) {
-
             if (dataArray.includes(arr[i]) === true) {
-
                araayChecked.push(true)
-
             } else {
-
                araayChecked.push(false)
-
             }
          }
          return (
@@ -151,9 +132,7 @@ const AllIn = () => {
 
       } else {
          var arr = Object.keys(paramsDataArray)
-
          for (let i = 0; i < arr.length; i++) {
-
             if (dataArray.includes(arr[i]) !== true) {
                araayChecked.push(false)
             }
@@ -168,18 +147,13 @@ const AllIn = () => {
             ))
          )
       }
-
    }
 
-   // useEffect(() => {
 
-   //    if (dataArray.length !== 0) {
-   //       doAction()
-   //    } else {
-   //       doAction()
-   //    }
-   //    console.log(dataArray)
-   // }, [dataArray])
+   const applyData = () => {
+      console.log(dataArray)
+   }
+
 
    useEffect(() => {
       const getUsers = () => {
@@ -201,7 +175,7 @@ const AllIn = () => {
    return (
       <>
          {dataSnapshot !== null ? (
-            <div className='column justify-center px-auto'>
+            <div className='column justify-center px-auto h-auto'>
                <div className="flex flex-wrap lg:flex-nowrap justify-center ">
                   <div className="flex mt-3 flex-wrap justify-between gap-1 items-center">
                      {earningData.map((item) => (
@@ -351,7 +325,7 @@ const AllIn = () => {
 
                      {doAction()}
 
-                     <button className='w-fit h-[44px] rounded-lg border-1 bg-main-bg px-3 py-2 my-auto ml-8'>Apply</button>
+                     <button className='w-fit h-[44px] rounded-lg border-1 bg-main-bg px-3 py-2 my-auto ml-8' onClick={ applyData}>Apply</button>
 
                   </div>
 
@@ -360,7 +334,7 @@ const AllIn = () => {
 
 
                {dataArray.length > 0 ? (
-                  <div className='flex flex-wrap mx-auto'>
+                  <div className='flex flex-wrap mx-auto bg-main-dark-bg'>
                      <>
                         {dataArray.map((item) => (
                            // <div key={item} >
@@ -394,56 +368,4 @@ export default AllIn
 
 
 
-// {
-//    dataArray.map((item) => {
-//       const obj = {
-//          obj: String,
-//          checked: Boolean
-//       }
-//       if (Object.keys(paramsDataArray).includes(item) === true) {
-//          obj.obj = item
-//          obj.checked = true
-//       }
 
-//       return (
-//          <>
-//             {Object.keys(paramsDataArray).map((key) => {
-
-
-//                <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={key}>
-//                   <input type='checkbox' id={key} value={key} checked={obj.obj === key ? obj.checked : !obj.checked} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
-//                   <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' key={key} htmlFor={key}>{paramsDataArray[key]}</label>
-//                </div>
-
-//             })}
-//          </>
-//       )
-//    }
-//    )
-// }
-
-
-// {
-//    Object.keys(paramsDataArray).map((key) => {
-
-//       let mainObj = {}
-//       dataArray.map((item) => {
-//          const obj = {
-//             obj: String,
-//             checked: Boolean
-//          }
-//          if (Object.keys(paramsDataArray).includes(item) === true) {
-//             obj.obj = item
-//             obj.checked = true
-//          }
-//          mainObj = obj
-//       })
-//       console.log(mainObj, '121212')
-//       return (
-//          <div className='flex w-full py-auto text-white text-base mx-2 text-center ' key={key}>
-//             <input type='checkbox' id={key} value={key} checked={false} className='rounded-full border-1 cursor-pointer w-5 h-5 my-auto' placeholder=' ' onClick={CheckHandler} />
-//             <label className='ml-2 w-[max-content] h-[min-content] my-auto  cursor-pointer' htmlFor={key}>{paramsDataArray[key]}</label>
-//          </div>
-//       )
-//    })
-// }
