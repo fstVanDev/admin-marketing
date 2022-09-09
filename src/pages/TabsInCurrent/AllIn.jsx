@@ -9,18 +9,19 @@ import { FiBarChart } from 'react-icons/fi';
 import { BsBoxSeam } from 'react-icons/bs';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import ChartClassic from '../../components/Charts/ChartClassic';
+import { applyNewConfig } from '../../context/RequestProvider';
 
 
 
 
 
 const AllIn = () => {
-   const { dataSnapshot, setDataSnapshot, setViewChart, checboxData, setCheckboxData } = useContext(StateContext)
+   const { dataSnapshot, setDataSnapshot, setViewChart, userAccount } = useContext(StateContext)
 
    const [allUsers, setAllUsers] = useState(null)
    // const [name, setName] = useState()
 
-   const [dataArray, setDataArray] = useState(checboxData !== null ? checboxData : [])
+   const [dataArray, setDataArray] = useState([])
 
    function classNames(...classes) {
       return classes.filter(Boolean).join(' ')
@@ -150,8 +151,8 @@ const AllIn = () => {
    }
 
 
-   const applyData = () => {
-      console.log(dataArray)
+   const applyData = async() => {
+      await applyNewConfig(dataArray, userAccount)
    }
 
 

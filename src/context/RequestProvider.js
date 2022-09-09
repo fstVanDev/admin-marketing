@@ -283,3 +283,34 @@ export const getCurrentDate = (newDate, i) => {
    const date = year + '-' + (month + 1) + '-' + (days - i)
    return date
 }
+
+
+
+export const applyNewConfig = async(config, account) => {
+
+   const data1 = window.localStorage.getItem('currentProject')
+   const data2 = JSON.parse(data1)
+   var data = qs.stringify({
+      'project_id': data2.project_id,
+      'config': config,
+      'wallet_address': account
+   });
+
+   var config = {
+      method: 'post',
+      url: `${process.env.REACT_APP_BACK_URL}/dashboard_config`,
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+   };
+
+   axios(config)
+      .then(function (response) {
+         console.log((response.data));
+      })
+      .catch(function (error) {
+         console.log(error);
+      });
+
+}
