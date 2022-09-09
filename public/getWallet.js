@@ -159,11 +159,13 @@ async function getAddress() {
             var projectKey = document
               .querySelector("#marketing_script")
               .getAttribute("secret_key");
+              if (localStorage.getItem("status") !== 'user_connected_wallet'){
             postData(
               accounts[0],
               projectKey,
               parseInt(chainId, 16)
             );
+              }
             console.log(`Chain ID: ${parseInt(chainId, 16)}`);
           })
           .catch((error) => {
@@ -213,4 +215,7 @@ async function postData(wallet, project_id, chain_id) {
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
+
+    localStorage.setItem("status", "user_connected_wallet");
+
 }
