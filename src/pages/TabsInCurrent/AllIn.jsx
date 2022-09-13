@@ -151,7 +151,7 @@ const AllIn = () => {
    }
 
 
-   const applyData = async() => {
+   const applyData = async () => {
       await applyNewConfig(dataArray, userAccount)
    }
 
@@ -326,7 +326,7 @@ const AllIn = () => {
 
                      {doAction()}
 
-                     <button className='w-fit h-[44px] rounded-lg border-1 bg-main-bg px-3 py-2 my-auto ml-8' onClick={ applyData}>Apply</button>
+                     <button className='w-fit h-[44px] rounded-lg border-1 bg-main-bg px-3 py-2 my-auto ml-8' onClick={applyData}>Apply</button>
 
                   </div>
 
