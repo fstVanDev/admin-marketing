@@ -114,16 +114,22 @@ export const registerNewProject = async (name, contract, url, type, account, set
 
 
 // get current project data 
-export const getCurrentProject = async (value, setGeneralData, setCurrentUserProject) => {
+export const getCurrentProject = async (value, idProject, setGeneralData) => {
 
-   const datas = window.localStorage.getItem('allProjectsData')
-   const userProjectsData = JSON.parse(datas)
+   var id = ''
+
+   if (idProject === 0) {
+      const datas = window.localStorage.getItem('allProjectsData')
+      const userProjectsData = JSON.parse(datas)
+      id = userProjectsData[value].project_id
+   } else {
+      id = idProject
+   }
   
-   setCurrentUserProject(value)
 
 
    var data = qs.stringify({
-      'project_id': userProjectsData[value].project_id
+      'project_id': id
    });
    var config = {
       method: 'post',

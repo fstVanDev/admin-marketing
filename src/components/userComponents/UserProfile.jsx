@@ -19,7 +19,7 @@ const UserProfile = () => {
 
    const clickOnProject = async (value) => {
       console.log(currentUserProject)
-      await getCurrentProject(value, setGeneralData, setCurrentUserProject)
+      await getCurrentProject(value, 0, setGeneralData)
 
       await getDataSnapshot(setDataSnapshot, getCurrentDate(new Date(), 0), getCurrentDate(new Date(), 1))
    }

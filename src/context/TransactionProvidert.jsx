@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { checkRegisterAndGetUserProjects, getCurrentProjectbyProjectId, getDataSnapshot, getCurrentDate } from './RequestProvider';
+import { checkRegisterAndGetUserProjects, getCurrentProject, getDataSnapshot, getCurrentDate } from './RequestProvider';
 import { StateContext } from './StateProvider';
 import { LocalContext } from './LocalProvider';
 
@@ -37,8 +37,8 @@ export const TransactionProvider = ({ children }) => {
             setUserAccount(accounts[0])
             setUserChainWallet(window.ethereum.networkVersion)
 
-            checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore, userAccount)
-            getCurrentProjectbyProjectId(data1.project_id, setGeneralData)
+           await  checkRegisterAndGetUserProjects(accounts, setIsUserRegistered, setProjectsInfo, setUserProjectsDataToLocalStore, userAccount)
+            getCurrentProject(0, data1.project_id, setGeneralData)
             getDataSnapshot(setDataSnapshot, getCurrentDate(new Date(), 0), getCurrentDate(new Date(), 1))
          } else {
             console.log('none account in check wallet')
